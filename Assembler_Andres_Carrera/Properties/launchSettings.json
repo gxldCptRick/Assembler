@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Assembler_Andres_Carrera": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\Andres Carrera\\Documents\\Programming Languages\\forever_blinking_light_assembly.txt\""
+    }
+  }
+}
