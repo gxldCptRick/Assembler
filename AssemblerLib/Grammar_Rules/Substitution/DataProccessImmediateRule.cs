@@ -24,7 +24,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
                 if (s[i] is NumericToken secondParam &&
                     s[i + 1] is RegisterToken source && 
                     s[i + 2] is RegisterToken destination && 
-                    s[i + 3] is AlphaNumeric an && _immediatePattern.IsMatch(an) && !DontDoIt.Contains(an))
+                    s[i + 3] is AlphaNumeric an && _immediatePattern.IsMatch(an) && !IsExcluded(an))
                 {
                     i += 3;
                     var token = builder.FromRawResources(an, destination, source, secondParam);
@@ -42,6 +42,11 @@ namespace AssemblerLib.Grammar_Rules.Substitution
             }
 
             return new Stack<IToken>(nextStack);
+        }
+
+        private bool IsExcluded(string an)
+        {
+            return an.StartsWith("STR") || an.StartsWith("LDR")|| an.StartsWith("B");
         }
     }
 }

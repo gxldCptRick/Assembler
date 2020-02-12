@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Tokenizer.Tokens
 {
-    public abstract class NumericToken : IToken
+    public abstract class NumericToken : IToken, IEquatable<NumericToken>
     {
         private int _value;
         protected abstract bool IsValidValue(string value);
@@ -38,6 +38,10 @@ namespace AssemblerLib.Tokenizer.Tokens
         }
 
         public override string ToString() => Content;
+        public bool Equals(NumericToken other) => other != null && other.Value == Value;
+        public override bool Equals(object obj) =>  obj is NumericToken num && Equals(num);
+        public override int GetHashCode() => Value.GetHashCode();
+        
 
         public static implicit operator int(NumericToken t) => t.Value;
     }

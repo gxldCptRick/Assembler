@@ -7,9 +7,9 @@ namespace AssemblerLib.Commands.LoadStore
 {
     public class LoadStoreRegisterToken : LoadStoreToken
     {
-        public override string Content => $"{_operation}{_condition} {_destination}, {_source}, {_offset}, {_shift}";
-        private SignedValueToken _shift;
-        private RegisterToken _offset;
+        public override string Content => $"{_operation}{(_condition == Condition.AL ? (object)"" : (object)_condition)} {_destination}, {_source}, {_offset}, {_shift}";
+        protected SignedValueToken _shift;
+        protected RegisterToken _offset;
 
         public LoadStoreRegisterToken(LoadStoreSelection operation, Condition condition, RegisterToken source, RegisterToken destination, RegisterToken offset, SignedValueToken shift) : base(operation, condition, source, destination)
         {

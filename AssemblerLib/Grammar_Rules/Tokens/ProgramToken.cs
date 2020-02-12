@@ -11,7 +11,7 @@ namespace AssemblerLib.Grammar_Rules.Tokens
     {
         public string Content => Instructions
             .Select(i => i.Content)
-            .Aggregate((agg, next) => $"{agg}\n{next}");
+            .Aggregate((agg, next) => $"{agg}{Environment.NewLine}{next}");
 
         private IDictionary<AlphaNumeric, int> _labelMapping;
         public IList<InstructionToken> Instructions
@@ -54,6 +54,10 @@ namespace AssemblerLib.Grammar_Rules.Tokens
                     yield return byteInstruction;
                 }
             }
+        }
+        public override string ToString()
+        {
+            return Content;
         }
     }
 }

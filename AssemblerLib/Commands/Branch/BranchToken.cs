@@ -9,10 +9,10 @@ namespace AssemblerLib.Commands.Branch
 {
     public class BranchToken : IOperation
     {
-        public string Content => $"B{_condition} {_destinationLabel}";
+        public virtual string Content => $"B{(_condition == Condition.AL ? (object)"" : (object)_condition)} {_destinationLabel}";
 
-        private AlphaNumeric _destinationLabel;
-        private Condition _condition;
+        protected AlphaNumeric _destinationLabel;
+        protected Condition _condition;
         public IDictionary<AlphaNumeric, int> LabelMapping { get; set; }
         public int Position { get; set; }
 
@@ -22,10 +22,14 @@ namespace AssemblerLib.Commands.Branch
             _destinationLabel = destinationLabel;
         }
 
+        public virtual int PrepareEncode()
+        {
+            return 0;
+        }
 
         public byte[] Encode()
         {
-            int i = 0;
+            int i = PrepareEncode();
             i |= ((int)_condition) << 28;
             // hardcoded values
             i |= 0b101 << 25;
@@ -45,7 +49,7 @@ namespace AssemblerLib.Commands.Branch
             }
             else
             {
-                offset = labelIndex - Position;
+                offset = labelIndex - Position - 2;
             }
             return offset & 0b0000_0000_1111_1111_1111_1111_1111_1111;
         }

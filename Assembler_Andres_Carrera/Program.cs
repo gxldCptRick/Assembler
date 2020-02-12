@@ -1,28 +1,32 @@
-﻿using System;
+﻿using AssemblerLib.Parser;
+using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Assembler_Andres_Carrera
 {
     class Program
     {
+
+        
         static void Main(string[] args)
         {
-            string path;
-            if(args.Length > 0)
+            var argParser = new ArgParser();
+            var parsedMap = argParser.ParseArguments(args);
+            if(parsedMap["mode"] == "asm")
             {
-                path = args[0];
-                if (!path.ToLower().StartsWith("c:"))
-                {
-                    path = Path.Join(Environment.CurrentDirectory, path);
-                }
+                new AssemblyFileCompiler().AssemblyToPathFromPath(parsedMap["input"], parsedMap["output"]);
             }
-            else
+            else if(parsedMap["mode"] == "help")
             {
-                // user input to get path.
-                path = "USER INPUT NOT SET";
+                Console.WriteLine("Usage: 'asm path_to_assembly <-o path_to_output>?' to assemble assembly file");
+                Console.WriteLine("Usage: 'asm path_to_text -c path_to_template <-o path_to_output>? <-s ## or 0x##>?' to compile txt file into both assembly and binary");
             }
-
-            new FileCompiler().CompileFromPath(path);
+            else 
+            {
+                parsedMap.TryGetValue("assemblyOutFile", out string assemblyOutFile);
+                new CompilerFileCompiler().CompileToPathFromPath(parsedMap["input"], parsedMap["template"], parsedMap["output"], new AssemblyParser().ParseAssembly(parsedMap["stack"]), assemblyOutFile);
+            }
         }
     }
 }

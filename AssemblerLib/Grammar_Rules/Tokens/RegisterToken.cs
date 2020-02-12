@@ -25,9 +25,13 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             }
         }
         
-        public RegisterToken(AlphaNumeric innerText)
+        public RegisterToken(AlphaNumeric rawRegister): this(rawRegister.Content)
         {
-            Rank = byte.Parse(innerText.Content.Substring(1));
+        }
+
+        public RegisterToken(string innerText)
+        {
+            Rank = byte.Parse(innerText.Substring(1));
         }
 
         public override string ToString() => Content;

@@ -32,7 +32,10 @@ namespace AssemblerLib.Commands.DataProcessing
             i |= ((int)_condition) << (DataProccessConstants.CONDITION_OFFSET);
             i &= DataProccessConstants.VALUE_TO_HARD_CODE_ZEROS;
             i |= ((int)_opCode) << DataProccessConstants.OPCODE_OFFSET;
-            i |= 1 << DataProccessConstants.SET_CONDITION_CODE_OFFSET;
+            if (_opCode != OperationCode.MOV)
+            {
+                i |= 1 << DataProccessConstants.SET_CONDITION_CODE_OFFSET;
+            }
             i |= _sourceRegister << DataProccessConstants.SOURCE_REGISTER_OFFSET;
             i |= _destinationRegister << DataProccessConstants.DESTINATION_REGISTER_OFFSET;
             // fixes the endianess of our command

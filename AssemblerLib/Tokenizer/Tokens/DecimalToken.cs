@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Tokenizer.Tokens
 {
-    public class DecimalToken : NumericToken, IEquatable<DecimalToken>
+    public class DecimalToken : NumericToken
     {
 
         private static readonly Regex numberRegex = new Regex("[0-9]+");
@@ -14,11 +14,5 @@ namespace AssemblerLib.Tokenizer.Tokens
         protected override int ParseValue(string value) => int.Parse(value);
         public DecimalToken(string content) : base(content, "Content was not a valid decimal")
         { }
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
-        public override bool Equals(object obj) => obj is DecimalToken d && Equals(d);
-        public bool Equals(DecimalToken other) => other != null && other.Value == Value;
     }
 }

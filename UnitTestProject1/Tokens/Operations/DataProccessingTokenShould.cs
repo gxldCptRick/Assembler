@@ -32,5 +32,6 @@ namespace AssemblerTests.Tokens.Operations
                 .ContainInOrder(expectedOutput, 
                         because: "That is the correct translation of this command");
         }
+
     }
 }

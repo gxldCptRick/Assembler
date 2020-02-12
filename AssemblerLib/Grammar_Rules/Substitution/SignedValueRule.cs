@@ -17,11 +17,15 @@ namespace AssemblerLib.Grammar_Rules.Substitution
             {
                 if (s[i] is NumericToken nt)
                 {
-                    if(s[i +1 ] is SpecialChars sc && sc == "-")
+                    if (s[i + 1] is SpecialChars sc && sc == "-")
                     {
                         i++;
+                        nextStack.Push(new SignedValueToken(nt, isNegative: true));
                     }
-                    nextStack.Push(new SignedValueToken(nt));
+                    else
+                    {
+                        nextStack.Push(new SignedValueToken(nt));
+                    }
                    
                 }
                 else

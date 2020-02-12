@@ -19,20 +19,31 @@ namespace AssemblerLib.Parser
             {
                 new RegisterRule(),
                 new LabelRule(),
+                new BranchExchangeRule(),
                 new BranchRule(),
+                new BranchLinkRule(),
+                new PushPopRule(),
                 new MoveTopBottomRule(),
+                new MovShorthandRule(),
                 new DataProccessImmediateRule(),
                 new DataProccessRegisterRule(),
                 new SignedValueRule(),
+                new LoadStoreWritebackRule(),
                 new LoadStoreImmediateRule(),
                 new LoadStoreRegisterRule(),
                 new InstructionRule()
             };
         }
-        public ProgramToken Parse(string input)
+        public ProgramToken ParseAssembly(string input)
+        {
+            
+            return Parse(_tokenizer.Tokenize(input));
+        }
+
+        public ProgramToken Parse(IEnumerable<IToken> tokens)
         {
             var memoryStack = new Stack<IToken>();
-            var tokenStream = _tokenizer.Tokenize(input).Where(t => !(t is CommentToken) && !(t is SpecialChars sc && sc == ","));
+            var tokenStream = tokens.Where(t => !(t is CommentToken) && !(t is SpecialChars sc && sc == ","));
             foreach (var token in tokenStream)
             {
                 memoryStack.Push(token);

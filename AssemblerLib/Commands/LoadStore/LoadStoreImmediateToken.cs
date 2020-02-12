@@ -7,9 +7,9 @@ namespace AssemblerLib.Commands.LoadStore
 {
     public class LoadStoreImmediateToken : LoadStoreToken
     {
-        private SignedValueToken _offset;
+        protected SignedValueToken _offset;
 
-        public override string Content => $"{_operation}{_condition} {_destination}, {_source}, {_offset}";
+        public override string Content => $"{_operation}{(_condition == Condition.AL ? (object)"" : (object)_condition)}I {_destination}, {_source}, {_offset}";
         public LoadStoreImmediateToken(LoadStoreSelection operation, Condition condition, RegisterToken source, RegisterToken destination, SignedValueToken offset) : base(operation, condition, source, destination)
         {
             _offset = offset;

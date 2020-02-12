@@ -36,7 +36,7 @@ namespace AssemblerLib.Commands.DataProcessing
                 this._secondParameter = value;
             }
         }
-        public override string Content => $"{_opCode}{_condition} ${_destinationRegister}, ${_sourceRegister}, ${_secondParameter}, {_shift}";
+        public override string Content => $"{_opCode}{(_condition == Condition.AL? (object)"":(object)_condition)} {_destinationRegister}, {_sourceRegister}, {_secondParameter}, {_shift}";
 
         public DataProccessRegisterToken(
             Condition condition,

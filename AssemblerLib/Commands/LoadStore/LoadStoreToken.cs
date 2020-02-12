@@ -21,7 +21,7 @@ namespace AssemblerLib.Commands.LoadStore
             _source = source;
             _destination = destination;
         }
-
+        //LDRI! R1, R2, 0
         protected abstract int EncodeHook();
 
         public byte[] Encode()
@@ -29,7 +29,10 @@ namespace AssemblerLib.Commands.LoadStore
             int i = 0 | EncodeHook();
             i |= ((int)_condition) << LoadStoreConstants.CONDITION_OFFSET;
             i |= 1 << LoadStoreConstants.HARDCODED_ONE_OFFSET;
-            i |= 1 << LoadStoreConstants.PREPOST_OFFSET;
+            if (_operation == LoadStoreSelection.LDR)
+            {
+                i |= 1 << LoadStoreConstants.PREPOST_OFFSET;
+            }
             i |= ((int)_operation) << LoadStoreConstants.LOADSTORE_OFFSET;
             i |= _source << LoadStoreConstants.SOURCE_REGISTER_OFFSET;
             i |= _destination << LoadStoreConstants.DESTINATION_REGISTER_OFFSET;

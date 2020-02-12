@@ -7,23 +7,27 @@ using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
-    public class BranchRule : IGrammerRule
+    public class BranchLinkRule : IGrammerRule
     {
-        private static readonly BranchBuilder builder = new BranchBuilder();
-        private static readonly Regex _branchRegex = new Regex("^((B[A-Za-z]{2})|(B))$");
+
+        private static Regex branchLinkPattern = new Regex("^(BL[A-Z]{2})|(BL)$");
+        private static BranchLinkBuilder builder = new BranchLinkBuilder();
+
+
+        // BLLT LABEL_NAME
         public Stack<IToken> ReduceStack(Stack<IToken> currentStack)
         {
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
-            int i = 0; 
+            int i = 0;
 
-            for(; i + 1 < s.Length; i++)
+            for (; i + 1 < s.Length; i++)
             {
-                if (s[i] is AlphaNumeric name &&
-                    s[i + 1] is AlphaNumeric b && _branchRegex.IsMatch(b))
+                if(s[i] is AlphaNumeric name && 
+                    s[i + 1] is AlphaNumeric an && branchLinkPattern.IsMatch(an))
                 {
                     i += 1;
-                    nextStack.Push(builder.FromRawTokens(b, name));
+                    nextStack.Push(builder.FromRawTokens(an, name));
                 }
                 else
                 {
@@ -31,11 +35,11 @@ namespace AssemblerLib.Grammar_Rules.Substitution
                 }
             }
 
-
             for(; i < s.Length; i++)
             {
                 nextStack.Push(s[i]);
             }
+
             return new Stack<IToken>(nextStack);
         }
     }

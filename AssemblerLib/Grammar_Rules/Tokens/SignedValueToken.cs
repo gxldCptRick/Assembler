@@ -10,11 +10,13 @@ namespace AssemblerLib.Grammar_Rules.Tokens
         private readonly NumericToken _nestedToken;
 
         public string Content => $"{Value}";
-        public int Value => -_nestedToken;
+        private bool IsNegative { get; }
+        public int Value => IsNegative ? -_nestedToken : _nestedToken;
 
-        public SignedValueToken(NumericToken nestedToken)
+        public SignedValueToken(NumericToken nestedToken, bool isNegative = false)
         {
             _nestedToken = nestedToken;
+            IsNegative = isNegative;
         }
         public static implicit operator int(SignedValueToken svt) => svt.Value;
 

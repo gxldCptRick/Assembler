@@ -2,7 +2,8 @@
   "profiles": {
     "Assembler_Andres_Carrera": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\Andres Carrera\\Documents\\Programming Languages\\forever_blinking_light_assembly.txt\""
+      "commandLineArgs": ".\\demo.txt -c .\\blinking_light_template.asm -o kernel7.img -s 0xFF000000",
+      "workingDirectory": "C:\\Users\\Andres Carrera\\Documents\\Programming Languages"
     }
   }
 }

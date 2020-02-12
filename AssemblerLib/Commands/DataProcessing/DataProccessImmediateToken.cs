@@ -8,7 +8,7 @@ namespace AssemblerLib.Commands.DataProcessing
     {
         private NumericToken _immediateValue;
 
-        public override string Content => $"{_opCode}{_condition}I ${_destinationRegister}, ${_sourceRegister}, {ImmediateValue}";
+        public override string Content => $"{_opCode}{(_condition == Condition.AL ? (object)"" : (object)_condition)}I {_destinationRegister}, {_sourceRegister}, {ImmediateValue}";
 
         public NumericToken ImmediateValue
         {

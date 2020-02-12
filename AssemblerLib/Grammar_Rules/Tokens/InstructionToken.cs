@@ -10,20 +10,15 @@ namespace AssemblerLib.Grammar_Rules.Tokens
 {
     public class InstructionToken : IToken, IEnumerable<byte>
     {
+        public LabelToken Label { get; }
+        public string Content =>Label != null ? $"{Label} {Operation.Content}": Operation.Content;
 
-        private IOperation _operation;
-        private LabelToken _label;
-
-
-        public LabelToken Label { get => _label; }
-        public string Content =>_label != null ? $"{_label} {Operation}": Operation.ToString();
-
-        public IOperation Operation { get => _operation; set => _operation = value; }
+        public IOperation Operation { get; set; }
 
         public InstructionToken(IOperation operation, LabelToken label = null)
         {
             Operation = operation;
-            _label = label;
+            Label = label;
         }
         public IEnumerator<byte> GetEnumerator()
         {
