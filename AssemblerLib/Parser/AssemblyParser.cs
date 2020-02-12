@@ -1,4 +1,5 @@
-﻿using AssemblerLib.Grammar_Rules;
+﻿using AssemblerLib.Exceptions;
+using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Grammar_Rules.Substitution;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
@@ -42,21 +43,21 @@ namespace AssemblerLib.Parser
 
         public ProgramToken Parse(IEnumerable<IToken> tokens)
         {
-            var memoryStack = new Stack<IToken>();
+            var stack = new Stack<IToken>();
             var tokenStream = tokens.Where(t => !(t is CommentToken) && !(t is SpecialChars sc && sc == ","));
             foreach (var token in tokenStream)
             {
-                memoryStack.Push(token);
+                stack.Push(token);
                 foreach (var rule in _rulesEngine)
                 {
-                    memoryStack = rule.ReduceStack(memoryStack);
+                    stack = rule.ReduceStack(stack);
                 }
             }
-            memoryStack = new ProgramRule().ReduceStack(memoryStack);
+            stack = new ProgramRule().ReduceStack(stack);
 
-            if (memoryStack.Count != 1) throw new ArgumentException("Could not parse the inputs");
-            if (!(memoryStack.Peek() is ProgramToken)) throw new ArgumentException("The input did not parse correctly");
-            return memoryStack.Pop() as ProgramToken;
+            if (stack.Count != 1) throw new InvalidStack(stack, $"Stack should have reduced to 1 not {stack.Count}");
+            if (!(stack.Peek() is ProgramToken)) throw new InvalidStack(stack, $"Stack contain {nameof(ProgramToken)} on the stack.");
+            return stack.Pop() as ProgramToken;
         }
     }
 }

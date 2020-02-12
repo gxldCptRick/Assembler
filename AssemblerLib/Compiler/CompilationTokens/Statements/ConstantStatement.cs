@@ -1,32 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Commands.LoadStore;
-using AssemblerLib.Commands.MoveTopBottom;
+﻿using AssemblerLib.Commands.MoveTopBottom;
 using AssemblerLib.Commands.PushPop;
 using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
+using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System;
+using System.Collections.Generic;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Statements
 {
     public class ConstantStatement : IStatement
     {
-        public string Content => throw new NotImplementedException();
-        private NumericToken _constantValue;
+        public string Content => _expression.Content;
+        private  NumericToken ConstantValue { get => _expression.Value; }
+        private readonly Expression _expression;
 
-        public ConstantStatement(NumericToken constantValue)
+
+        public ConstantStatement(Expression expression)
         {
-            _constantValue = constantValue;
+            _expression = expression;
         }
 
-        const int lastSixteen = 0xFF_FF;
-        static readonly RegisterToken _defaultValueRegister = new RegisterToken("R7");
-        static readonly RegisterToken _stackPointerRegister = new RegisterToken("R13");
+        private const int lastSixteen = 0xFF_FF;
+        private static readonly RegisterToken _defaultValueRegister = new RegisterToken("R7");
         public IEnumerable<IToken> AssemblyCommand()
         {
-            var bottomValue = _constantValue & lastSixteen;
-            var topValue = (_constantValue >> 16) & lastSixteen;
+            var bottomValue = ConstantValue & lastSixteen;
+            var topValue = (ConstantValue >> 16) & lastSixteen;
             return new List<IToken>
             {
                 new MoveWordToken(

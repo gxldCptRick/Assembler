@@ -3,6 +3,7 @@ using AssemblerLib.Compiler.CompilationTokens.Rules;
 using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Parser;
+using AssemblerLib.Exceptions;
 using AssemblerLib.Tokenizer.Tokens;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,15 @@ namespace AssemblerLib.Compiler
 {
     public class Compiler
     {
-        IList<IGrammerRule> _compilerEngine;
+        IList<IGrammerRule> _compilerProccessingEngine;
         public Compiler(Action<ProgramToken> callbackHook)
         {
             _callbackHook = callbackHook;
-            _compilerEngine = new List<IGrammerRule> { new ConstantRule() };
+            _compilerProccessingEngine = new List<IGrammerRule>
+            {
+                new ReplacementExpressionRule(),
+                new NestedExpressionRule(),
+            };
         }
 
         private Action<ProgramToken> _callbackHook;
@@ -27,14 +32,15 @@ namespace AssemblerLib.Compiler
             foreach (var item in inputTokens)
             {
                 stack.Push(item);
-                foreach (var rule in _compilerEngine)
+                foreach (var rule in _compilerProccessingEngine)
                 {
                     stack = rule.ReduceStack(stack);
                 }
             }
+            stack = new ConstantRule().ReduceStack(stack);
             stack = new FinalProgramRule().ReduceStack(stack);
-            if (stack.Count != 1) throw new ArgumentException("Not able to reduce the stack into program");
-            if (!(stack.Peek() is Program)) throw new ArgumentException("Last token on stack is not program");
+            if (stack.Count != 1) throw new InvalidStack(stack, $"Stack should have reduced to one not {stack.Count}");
+            if (!(stack.Peek() is Program)) throw new InvalidStack(stack, $"Stack should only have {nameof(Program)}");
             var rawProgram = stack.Pop() as Program;
             var program = new AssemblyParser().Parse(rawProgram.Assemble());
             _callbackHook?.Invoke(program);

@@ -1,4 +1,5 @@
 ﻿using AssemblerLib.Compiler.CompilationTokens.Statements;
+using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
 using System;
@@ -19,7 +20,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                 if (i + 1 < s.Length)
                 {
                     if (s[i] is SpecialChars sc && sc == ";" &&
-                        s[i + 1] is NumericToken nt)
+                        s[i + 1] is Expression nt)
                     {
                         i += 1;
                         nextStack.Push(new ConstantStatement(nt));
@@ -31,7 +32,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                 }
                 else
                 {
-                    if (s[i] is NumericToken nt)
+                    if (s[i] is Expression nt)
                     {
                         nextStack.Push(new ConstantStatement(nt));
                     }

@@ -13,7 +13,7 @@ namespace Assembler_Andres_Carrera
 {
     public class ArgParser
     {
-        private static ProgramToken defaultProgam = StackInitialAddress(0x0);
+        private static ProgramToken defaultProgam = StackInitialAddress(0x10);
         private static string ResolvePath(string path) => Path.IsPathFullyQualified(path) ? path : Path.Join(Environment.CurrentDirectory, path);
         public IDictionary<string, string> ParseArguments(string[] args)
         {
