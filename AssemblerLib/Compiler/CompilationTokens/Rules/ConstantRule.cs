@@ -20,10 +20,14 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                 if (i + 1 < s.Length)
                 {
                     if (s[i] is SpecialChars sc && sc == ";" &&
-                        s[i + 1] is Expression nt)
+                        s[i + 1] is Expression properValue)
                     {
                         i += 1;
-                        nextStack.Push(new ConstantStatement(nt));
+                        nextStack.Push(new ConstantStatement(properValue));
+                    }
+                    else if(s[i] is Expression value)
+                    {
+                        nextStack.Push(new ConstantStatement(value));
                     }
                     else
                     {
@@ -41,11 +45,6 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                         nextStack.Push(s[i]);
                     }
                 }
-
-            }
-            for (; i < s.Length; i++)
-            {
-                nextStack.Push(s[i]);
             }
 
             return new Stack<IToken>(nextStack);
