@@ -37,5 +37,22 @@ namespace AssemblerLib.Commands.MoveTopBottom
         {
             return Content;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is MoveTopToken token &&
+                   _condition == token._condition &&
+                   EqualityComparer<RegisterToken>.Default.Equals(_destination, token._destination) &&
+                   EqualityComparer<NumericToken>.Default.Equals(_value, token._value);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -9044964;
+            hashCode = hashCode * -1521134295 + _condition.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<RegisterToken>.Default.GetHashCode(_destination);
+            hashCode = hashCode * -1521134295 + EqualityComparer<NumericToken>.Default.GetHashCode(_value);
+            return hashCode;
+        }
     }
 }

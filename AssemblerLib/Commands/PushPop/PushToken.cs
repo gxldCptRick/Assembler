@@ -24,5 +24,20 @@ namespace AssemblerLib.Commands.PushPop
             bytes.Reverse();
             return bytes;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is PushToken token &&
+                   _condition == token._condition &&
+                   EqualityComparer<RegisterToken>.Default.Equals(_source, token._source);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1889235114;
+            hashCode = hashCode * -1521134295 + _condition.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<RegisterToken>.Default.GetHashCode(_source);
+            return hashCode;
+        }
     }
 }

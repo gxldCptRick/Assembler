@@ -36,6 +36,17 @@ namespace AssemblerLib.Grammar_Rules.Tokens
 
         public override string ToString() => Content;
 
+        public override bool Equals(object obj)
+        {
+            return obj is RegisterToken token &&
+                   Rank == token.Rank;
+        }
+
+        public override int GetHashCode()
+        {
+            return 1852875615 + Rank.GetHashCode();
+        }
+
         public static implicit operator int(RegisterToken t) => t.Rank;
     }
 }

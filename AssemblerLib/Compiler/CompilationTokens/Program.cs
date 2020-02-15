@@ -22,7 +22,7 @@ namespace AssemblerLib.Compiler.CompilationTokens
 
         public IEnumerable<IToken> Assemble()
         {
-            foreach(var statement in Statements)
+            foreach(var statement in Statements.Reverse())
             {
                 foreach (var token in statement.AssemblyCommand())
                 {

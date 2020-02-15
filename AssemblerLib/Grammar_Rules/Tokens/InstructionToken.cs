@@ -35,5 +35,19 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             return Content;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is InstructionToken token &&
+                    (Label != null ? Label.Equals(token.Label): Label == token.Label) &&
+                   Operation.Equals(token.Operation);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1544552139;
+            hashCode = hashCode * -1521134295 + EqualityComparer<LabelToken>.Default.GetHashCode(Label);
+            hashCode = hashCode * -1521134295 + EqualityComparer<IOperation>.Default.GetHashCode(Operation);
+            return hashCode;
+        }
     }
 }

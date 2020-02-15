@@ -7,7 +7,7 @@ using AssemblerLib.Commands.PushPop;
 using AssemblerLib.Grammar_Rules.Tokens;
 using FluentAssertions;
 
-namespace AssemblerTests.Tokens
+namespace AssemblerTests.Tokens.Operations
 {
     [TestClass]
     public class PushPopTokenShould

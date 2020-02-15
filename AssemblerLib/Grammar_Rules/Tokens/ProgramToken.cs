@@ -59,5 +59,18 @@ namespace AssemblerLib.Grammar_Rules.Tokens
         {
             return Content;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is ProgramToken token &&
+                    Instructions.SequenceEqual(token.Instructions);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1075755498;
+            hashCode = hashCode * -1521134295 + EqualityComparer<IList<InstructionToken>>.Default.GetHashCode(Instructions);
+            return hashCode;
+        }
     }
 }
