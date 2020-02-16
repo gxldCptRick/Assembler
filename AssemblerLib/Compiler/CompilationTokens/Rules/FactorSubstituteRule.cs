@@ -7,17 +7,21 @@ using System.Text;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
-    public class ReplacementExpressionRule : IGrammerRule
+    public class FactorSubstituteRule : IGrammerRule, IConditionalRule
     {
-        // EXP := {NumericValue}
+        public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
+        {
+            return ReduceStack(currentStack);
+        }
+
         public Stack<IToken> ReduceStack(Stack<IToken> currentStack)
         {
             var nextStack = new Stack<IToken>();
             foreach (var token in currentStack)
             {
-                if(token is NumericToken n)
+                if(token is NumericToken nt)
                 {
-                    nextStack.Push(new ExpressionConstantValue(n));
+                    nextStack.Push(new SimpleFactor(nt));
                 }
                 else
                 {

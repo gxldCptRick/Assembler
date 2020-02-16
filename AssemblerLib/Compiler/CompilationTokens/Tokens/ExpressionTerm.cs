@@ -5,14 +5,16 @@ using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
-    public class ExpressionConstantValue : Expression
+    public class ExpressionTerm : Expression
     {
         public override string Content => Value.Content;
-        public override NumericToken Value { get; }
+        public override NumericToken Value => Term.Value;
+        public Term Term;
 
-        public ExpressionConstantValue(NumericToken value)
+
+        public ExpressionTerm(Term term)
         {
-            Value = value;
+            Term = term;
         }
     }
 }

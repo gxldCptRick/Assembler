@@ -20,8 +20,8 @@ namespace AssemblerLib.Compiler
             _callbackHook = callbackHook;
             _compilerProccessingEngine = new List<IGrammerRule>
             {
-                new ReplacementExpressionRule(),
-                new NestedExpressionRule(),
+                new ExpressTermRule(),
+                new ExpressionTermRule(),
             };
         }
 
@@ -30,6 +30,7 @@ namespace AssemblerLib.Compiler
         {
             var stack = new Stack<IToken>();
             var inputTokens = new Tokenizer.Tokenizer().Tokenize(input);
+            
             foreach (var item in inputTokens)
             {
                 stack.Push(item);

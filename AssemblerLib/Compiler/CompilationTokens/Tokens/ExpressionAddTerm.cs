@@ -6,15 +6,15 @@ using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
-    public class ExpressionNested : Expression
+    public class ExpressionAddTerm : Expression
     {
-        public override string Content => $"({LeftOperand}) + ({RightOperand})";
+        public override string Content => $"{LeftOperand} + {RightOperand}";
         public override NumericToken Value { get; }
 
         private Expression LeftOperand { get; }
-        private Expression RightOperand { get; }
+        private Term RightOperand { get; }
 
-        public ExpressionNested(Expression leftOperand, Expression rightOperand)
+        public ExpressionAddTerm(Expression leftOperand, Term rightOperand)
         {
             LeftOperand = leftOperand;
             RightOperand = rightOperand;
