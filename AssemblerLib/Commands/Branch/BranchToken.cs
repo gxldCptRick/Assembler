@@ -1,15 +1,12 @@
-﻿using AssemblerLib.Grammar_Rules.Substitution;
-using AssemblerLib.Grammar_Rules.Tokens;
+﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Commands.Branch
 {
     public class BranchToken : IOperation
     {
-        public virtual string Content => $"B{(_condition == Condition.AL ? (object)"" : (object)_condition)} {_destinationLabel}";
+        public virtual string Content => $"B{(_condition == Condition.AL ? "" : (object)_condition)} {_destinationLabel}";
 
         protected AlphaNumeric _destinationLabel;
         protected Condition _condition;
@@ -29,7 +26,7 @@ namespace AssemblerLib.Commands.Branch
 
         public byte[] Encode()
         {
-            int i = PrepareEncode();
+            var i = PrepareEncode();
             i |= ((int)_condition) << 28;
             // hardcoded values
             i |= 0b101 << 25;
@@ -41,7 +38,7 @@ namespace AssemblerLib.Commands.Branch
 
         private int CalculateOffset()
         {
-            int labelIndex = LabelMapping[_destinationLabel];
+            var labelIndex = LabelMapping[_destinationLabel];
             int offset;
             if (labelIndex <= Position)
             {

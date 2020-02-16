@@ -1,13 +1,10 @@
 ﻿using AssemblerLib.Grammar_Rules.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Commands.PushPop
 {
     public class PopToken : IOperation
     {
-        public string Content => $"POP{(_condition == Condition.AL? "":(object)_condition)} {_source}";
+        public string Content => $"POP{(_condition == Condition.AL ? "" : (object)_condition)} {_source}";
 
         private Condition _condition;
         private RegisterToken _source;

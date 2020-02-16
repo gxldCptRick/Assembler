@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
 using System.Text;
-using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Tokenizer.StateMachine
 {
@@ -10,7 +10,7 @@ namespace AssemblerLib.Tokenizer.StateMachine
         {
             IState state;
             currentGroup.Append(condition);
-            if(condition == '*')
+            if (condition == '*')
             {
                 state = new FoundPossiblyLastStar();
             }

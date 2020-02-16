@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Tokenizer.Tokens;
+﻿using AssemblerLib.Tokenizer.Tokens;
+using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
+    [DebuggerDisplay("Exprssion: {Value}")]
     public abstract class Expression : ICompilationToken
     {
         public abstract string Content { get; }

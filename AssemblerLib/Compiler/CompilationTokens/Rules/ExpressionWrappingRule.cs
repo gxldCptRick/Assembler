@@ -1,13 +1,13 @@
 ﻿using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
-    public class ExpressionWrappingRule : IGrammerRule, IConditionalRule
+    [DebuggerDisplay("F := (E)")]
+    public class FactorWrappingExpression : IGrammerRule, IConditionalRule
     {
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
         {
@@ -20,10 +20,10 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
             var i = 0;
-            for(; i + 2 < s.Length; i++)
+            for (; i + 2 < s.Length; i++)
             {
-                if(s[i] is SpecialChars closing && closing == ")" &&
-                    s[i + 1] is Expression wrapped && 
+                if (s[i] is SpecialChars closing && closing == ")" &&
+                    s[i + 1] is Expression wrapped &&
                     s[i + 2] is SpecialChars opening && opening == "(")
                 {
                     i += 2;

@@ -4,7 +4,6 @@ using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
 using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Statements
@@ -12,7 +11,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Statements
     public class ConstantStatement : IStatement
     {
         public string Content => _expression.Content;
-        private  NumericToken ConstantValue { get => _expression.Value; }
+        private NumericToken ConstantValue => _expression.Value;
         private readonly Expression _expression;
 
 

@@ -1,7 +1,4 @@
 ﻿using AssemblerLib.Grammar_Rules.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Commands.LoadStore
 {
@@ -26,7 +23,7 @@ namespace AssemblerLib.Commands.LoadStore
 
         public byte[] Encode()
         {
-            int i = 0 | EncodeHook();
+            var i = 0 | EncodeHook();
             i |= ((int)_condition) << LoadStoreConstants.CONDITION_OFFSET;
             i |= 1 << LoadStoreConstants.HARDCODED_ONE_OFFSET;
             if (_operation == LoadStoreSelection.LDR)
@@ -36,7 +33,7 @@ namespace AssemblerLib.Commands.LoadStore
             i |= ((int)_operation) << LoadStoreConstants.LOADSTORE_OFFSET;
             i |= _source << LoadStoreConstants.SOURCE_REGISTER_OFFSET;
             i |= _destination << LoadStoreConstants.DESTINATION_REGISTER_OFFSET;
-            byte[] command = i.ToByteArray();
+            var command = i.ToByteArray();
             command.Reverse();
             return command;
         }

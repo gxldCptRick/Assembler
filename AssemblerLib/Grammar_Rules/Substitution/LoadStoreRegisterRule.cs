@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AssemblerLib.Commands.LoadStore;
+﻿using AssemblerLib.Commands.LoadStore;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
@@ -17,13 +15,13 @@ namespace AssemblerLib.Grammar_Rules.Substitution
         {
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
-            int i = 0;
+            var i = 0;
 
             for (; i + 4 < s.Length; i++)
             {
                 if (s[i] is SignedValueToken shift &&
                     s[i + 1] is RegisterToken offset &&
-                    s[i + 2] is RegisterToken source && 
+                    s[i + 2] is RegisterToken source &&
                     s[i + 3] is RegisterToken destination &&
                     s[i + 4] is AlphaNumeric an && _ldrStrRegex.IsMatch(an))
                 {

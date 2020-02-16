@@ -3,7 +3,6 @@ using AssemblerLib.Tokenizer.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AssemblerLib.Grammar_Rules.Tokens
 {
@@ -21,7 +20,7 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             {
                 value = value.Reverse().ToList();
                 _labelMapping = new Dictionary<AlphaNumeric, int>();
-                for (int i = 0; i < value.Count; i++)
+                for (var i = 0; i < value.Count; i++)
                 {
                     if (value[i].Operation is BranchToken b)
                     {
@@ -42,7 +41,7 @@ namespace AssemblerLib.Grammar_Rules.Tokens
 
         public ProgramToken(IEnumerable<InstructionToken> groupedInstructions)
         {
-            this.Instructions = groupedInstructions.ToList();
+            Instructions = groupedInstructions.ToList();
         }
 
         public IEnumerable<byte> Compile()

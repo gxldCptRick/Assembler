@@ -1,7 +1,5 @@
-﻿using System;
+﻿using AssemblerLib.Tokenizer.Tokens;
 using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
@@ -12,7 +10,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
             var s = outputs.ToArray();
             var nextStack = new Stack<IToken>();
 
-            int i = 0;
+            var i = 0;
             for (; i + 1 < s.Length; i++)
             {
                 if (s[i] is SpecialChars sc &&
@@ -28,7 +26,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
                 }
             }
 
-            for(; i < s.Length; i++)
+            for (; i < s.Length; i++)
             {
                 nextStack.Push(s[i]);
             }

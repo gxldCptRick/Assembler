@@ -1,7 +1,5 @@
 ﻿using AssemblerLib.Tokenizer.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
@@ -14,11 +12,24 @@ namespace AssemblerLib.Grammar_Rules.Substitution
         {
             Name = name;
         }
-        public override string ToString() => Content;
-        public override bool Equals(object obj) => obj is LabelToken lt && Equals(lt);
+        public override string ToString()
+        {
+            return Content;
+        }
 
-        public override int GetHashCode() => Content.GetHashCode();
+        public override bool Equals(object obj)
+        {
+            return obj is LabelToken lt && Equals(lt);
+        }
 
-        public bool Equals(LabelToken other) => other != null && other.Content == Content;
+        public override int GetHashCode()
+        {
+            return Content.GetHashCode();
+        }
+
+        public bool Equals(LabelToken other)
+        {
+            return other != null && other.Content == Content;
+        }
     }
 }

@@ -1,14 +1,12 @@
 ﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Commands.MoveTopBottom
 {
     public class MoveWordToken : IOperation
     {
-        public string Content => $"MOVW{(_condition == Condition.AL ? (object)"" : (object)_condition)} {_destination}, {_value}";
+        public string Content => $"MOVW{(_condition == Condition.AL ? "" : (object)_condition)} {_destination}, {_value}";
         public Condition _condition;
         public RegisterToken _destination;
         public NumericToken _value;
@@ -22,10 +20,10 @@ namespace AssemblerLib.Commands.MoveTopBottom
 
         public byte[] Encode()
         {
-            int i = 0b0000_0011_0000_0000_0000_0000_0000_0000;
+            var i = 0b0000_0011_0000_0000_0000_0000_0000_0000;
             i |= ((int)_condition) << 28;
 
-            short shortenedValue = (short)_value;
+            var shortenedValue = (short)_value;
             i |= ((shortenedValue >> 12) & 0b1111) << 16;
             i |= _destination << 12;
             i |= (shortenedValue & 0b0000_1111_1111_1111) << 0;

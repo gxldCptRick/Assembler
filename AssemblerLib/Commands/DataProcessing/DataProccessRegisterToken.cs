@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Grammar_Rules.Tokens;
+﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System;
 
 namespace AssemblerLib.Commands.DataProcessing
 {
@@ -13,14 +11,16 @@ namespace AssemblerLib.Commands.DataProcessing
         private NumericToken _shift;
         private RegisterToken _secondParameter;
 
-        public NumericToken Shift {
+        public NumericToken Shift
+        {
             get => _shift;
             set
             {
                 if (value <= 255 && value >= 0)
                 {
                     _shift = value;
-                }else
+                }
+                else
                 {
                     throw new ArgumentException("Shift value must fit within 8 bits", nameof(Shift));
                 }
@@ -32,19 +32,23 @@ namespace AssemblerLib.Commands.DataProcessing
             get => _secondParameter;
             set
             {
-                if (value is null) throw new ArgumentNullException(nameof(SecondParameter));
-                this._secondParameter = value;
+                if (value is null)
+                {
+                    throw new ArgumentNullException(nameof(SecondParameter));
+                }
+
+                _secondParameter = value;
             }
         }
-        public override string Content => $"{_opCode}{(_condition == Condition.AL? (object)"":(object)_condition)} {_destinationRegister}, {_sourceRegister}, {_secondParameter}, {_shift}";
+        public override string Content => $"{_opCode}{(_condition == Condition.AL ? "" : (object)_condition)} {_destinationRegister}, {_sourceRegister}, {_secondParameter}, {_shift}";
 
         public DataProccessRegisterToken(
             Condition condition,
             OperationCode opCode,
             RegisterToken sourceRegister,
             RegisterToken destinationRegister,
-            NumericToken shift, 
-            RegisterToken secondParamater) : base(condition,opCode, sourceRegister, destinationRegister)
+            NumericToken shift,
+            RegisterToken secondParamater) : base(condition, opCode, sourceRegister, destinationRegister)
         {
             Shift = shift;
             SecondParameter = secondParamater;

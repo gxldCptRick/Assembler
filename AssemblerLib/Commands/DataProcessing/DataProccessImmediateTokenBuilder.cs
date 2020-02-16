@@ -1,14 +1,12 @@
 ﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Commands.DataProcessing
 {
     public class DataProccessImmediateTokenBuilder
     {
-        public DataProccessImmediateToken  FromRawResources(
+        public DataProccessImmediateToken FromRawResources(
             AlphaNumeric marker,
             RegisterToken destination,
             RegisterToken source,

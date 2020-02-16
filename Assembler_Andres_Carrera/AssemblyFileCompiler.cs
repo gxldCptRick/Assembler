@@ -1,8 +1,6 @@
 ﻿using AssemblerLib.Parser;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Assembler_Andres_Carrera
 {

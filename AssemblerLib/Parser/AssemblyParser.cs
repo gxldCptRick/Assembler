@@ -3,10 +3,8 @@ using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Grammar_Rules.Substitution;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AssemblerLib.Parser
 {
@@ -37,7 +35,7 @@ namespace AssemblerLib.Parser
         }
         public ProgramToken ParseAssembly(string input)
         {
-            
+
             return Parse(_tokenizer.Tokenize(input));
         }
 
@@ -55,8 +53,16 @@ namespace AssemblerLib.Parser
             }
             stack = new ProgramRule().ReduceStack(stack);
 
-            if (stack.Count != 1) throw new InvalidStack(stack, $"Stack should have reduced to 1 not {stack.Count}");
-            if (!(stack.Peek() is ProgramToken)) throw new InvalidStack(stack, $"Stack contain {nameof(ProgramToken)} on the stack.");
+            if (stack.Count != 1)
+            {
+                throw new InvalidStack(stack, $"Stack should have reduced to 1 not {stack.Count}");
+            }
+
+            if (!(stack.Peek() is ProgramToken))
+            {
+                throw new InvalidStack(stack, $"Stack contain {nameof(ProgramToken)} on the stack.");
+            }
+
             return stack.Pop() as ProgramToken;
         }
     }

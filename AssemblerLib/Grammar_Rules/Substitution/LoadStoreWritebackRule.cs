@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AssemblerLib.Commands.LoadStore;
+﻿using AssemblerLib.Commands.LoadStore;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
@@ -19,11 +17,11 @@ namespace AssemblerLib.Grammar_Rules.Substitution
         {
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
-            int i = 0;
+            var i = 0;
 
-            for(;i + 4 < s.Length; i++)
+            for (; i + 4 < s.Length; i++)
             {
-                if ( i + 5 < s.Length &&
+                if (i + 5 < s.Length &&
                     s[i] is SignedValueToken rotate &&
                     s[i + 1] is RegisterToken shift &&
                     s[i + 2] is RegisterToken source &&
@@ -33,11 +31,12 @@ namespace AssemblerLib.Grammar_Rules.Substitution
                 {
                     i += 5;
                     nextStack.Push(_builder.FromRawTokens(an, destination, source, shift, rotate));
-                } else if (s[i] is SignedValueToken iShift &&
-                            s[i + 1] is RegisterToken iSource && 
-                            s[i + 2] is RegisterToken iDestination && 
-                            s[i + 3] is SpecialChars iSc && iSc == "!" &&
-                            s[i + 4] is AlphaNumeric iAn && iAn.StartsWith("LDR", "STR") && iAn.EndsWith("I"))
+                }
+                else if (s[i] is SignedValueToken iShift &&
+                          s[i + 1] is RegisterToken iSource &&
+                          s[i + 2] is RegisterToken iDestination &&
+                          s[i + 3] is SpecialChars iSc && iSc == "!" &&
+                          s[i + 4] is AlphaNumeric iAn && iAn.StartsWith("LDR", "STR") && iAn.EndsWith("I"))
                 {
                     i += 4;
                     nextStack.Push(_builder.FromRawTokens(iAn, iDestination, iSource, iShift));
@@ -48,7 +47,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
                 }
             }
 
-            for(; i < s.Length; i++)
+            for (; i < s.Length; i++)
             {
                 nextStack.Push(s[i]);
             }
@@ -58,7 +57,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
 
     internal static class AlphaExtensions
     {
-        public static bool StartsWith(this AlphaNumeric an,  params string[] startings)
+        public static bool StartsWith(this AlphaNumeric an, params string[] startings)
         {
             var content = an.ToString();
             return startings.Any(a => content.StartsWith(a));

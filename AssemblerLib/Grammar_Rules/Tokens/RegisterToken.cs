@@ -1,7 +1,5 @@
 ﻿using AssemblerLib.Tokenizer.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Grammar_Rules.Tokens
 {
@@ -14,18 +12,18 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             get => _rank;
             private set
             {
-                if(value < 16 && value >= 0)
+                if (value < 16 && value >= 0)
                 {
                     _rank = value;
                 }
                 else
                 {
-                    throw new ArgumentException($"Rank must be from 0-15. but it was {value}",nameof(Rank));
+                    throw new ArgumentException($"Rank must be from 0-15. but it was {value}", nameof(Rank));
                 }
             }
         }
-        
-        public RegisterToken(AlphaNumeric rawRegister): this(rawRegister.Content)
+
+        public RegisterToken(AlphaNumeric rawRegister) : this(rawRegister.Content)
         {
         }
 
@@ -34,7 +32,10 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             Rank = byte.Parse(innerText.Substring(1));
         }
 
-        public override string ToString() => Content;
+        public override string ToString()
+        {
+            return Content;
+        }
 
         public override bool Equals(object obj)
         {
@@ -47,6 +48,9 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             return 1852875615 + Rank.GetHashCode();
         }
 
-        public static implicit operator int(RegisterToken t) => t.Rank;
+        public static implicit operator int(RegisterToken t)
+        {
+            return t.Rank;
+        }
     }
 }

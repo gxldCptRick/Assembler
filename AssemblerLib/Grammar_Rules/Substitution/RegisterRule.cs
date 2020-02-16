@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AssemblerLib.Grammar_Rules.Tokens;
+﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {

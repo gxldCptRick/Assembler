@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AssemblerLib.Commands.PushPop;
+﻿using AssemblerLib.Commands.PushPop;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
     public class PushPopRule : IGrammerRule
     {
-        Regex pushPattern = new Regex("^PUSH([A-Z]{2})?$");
-        Regex popPattern = new Regex("^POP([A-Z]{2})?$");
+        private Regex pushPattern = new Regex("^PUSH([A-Z]{2})?$");
+        private Regex popPattern = new Regex("^POP([A-Z]{2})?$");
         //PUSH R4
         //POP R3
         public Stack<IToken> ReduceStack(Stack<IToken> currentStack)
@@ -20,18 +19,18 @@ namespace AssemblerLib.Grammar_Rules.Substitution
             var nextStack = new Stack<IToken>();
             var i = 0;
 
-            for(; i < s.Length; i++)
+            for (; i < s.Length; i++)
             {
-                if(s[i] is RegisterToken sauce)
+                if (s[i] is RegisterToken sauce)
                 {
-                    if(s[i + 1] is AlphaNumeric push &&
+                    if (s[i + 1] is AlphaNumeric push &&
                         pushPattern.IsMatch(push))
                     {
                         i += 1;
                         var cond = FromAlphaNumeric(push);
                         nextStack.Push(new PushToken(cond, sauce));
                     }
-                    else if(s[i + 1] is AlphaNumeric pop &&
+                    else if (s[i + 1] is AlphaNumeric pop &&
                         popPattern.IsMatch(pop))
                     {
                         i += 1;
@@ -49,7 +48,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
                 }
             }
 
-            for(; i < s.Length; i++)
+            for (; i < s.Length; i++)
             {
                 nextStack.Push(s[i]);
             }
@@ -65,7 +64,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
             {
                 condition = (Condition)Enum.Parse(typeof(Condition), content.Substring(4, 2));
             }
-            else if(popPattern.IsMatch(an) && content.Length > 3)
+            else if (popPattern.IsMatch(an) && content.Length > 3)
             {
                 condition = (Condition)Enum.Parse(typeof(Condition), content.Substring(3, 2));
             }

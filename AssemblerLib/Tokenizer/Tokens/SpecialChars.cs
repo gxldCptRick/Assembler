@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Tokenizer.Tokens
 {
     public class SpecialChars : IToken, IEquatable<SpecialChars>
     {
-        static readonly ISet<char> SpecialCharacters = new HashSet<char>() { ',', '(', ')', ':', '-', '!', ';', '+' };
-        public static bool IsSpecialCharacter(string content) =>
-            content != null &&
-            content.Trim().Length == 1 &&
-            IsSpecialCharacter(content.Trim()[0]);
-        public static bool IsSpecialCharacter(char content) =>
-            SpecialCharacters.Contains(content);
+        private static readonly ISet<char> SpecialCharacters = new HashSet<char>() { ',', '(', ')', ':', '-', '!', ';', '+', '*' };
+        public static bool IsSpecialCharacter(string content)
+        {
+            return content != null &&
+content.Trim().Length == 1 &&
+IsSpecialCharacter(content.Trim()[0]);
+        }
+
+        public static bool IsSpecialCharacter(char content)
+        {
+            return SpecialCharacters.Contains(content);
+        }
+
         private string _content;
         public string Content
         {
@@ -34,12 +39,29 @@ namespace AssemblerLib.Tokenizer.Tokens
             Content = content;
         }
 
-        public override int GetHashCode() => Content.GetHashCode();
-        public override bool Equals(object obj) => obj is SpecialChars sc && Equals(sc);
-        public bool Equals(SpecialChars other) => other != null && other.Content == Content;
+        public override int GetHashCode()
+        {
+            return Content.GetHashCode();
+        }
 
-        public override string ToString() => Content;
+        public override bool Equals(object obj)
+        {
+            return obj is SpecialChars sc && Equals(sc);
+        }
 
-        public static implicit operator string(SpecialChars sc) => sc.Content;
+        public bool Equals(SpecialChars other)
+        {
+            return other != null && other.Content == Content;
+        }
+
+        public override string ToString()
+        {
+            return Content;
+        }
+
+        public static implicit operator string(SpecialChars sc)
+        {
+            return sc.Content;
+        }
     }
 }

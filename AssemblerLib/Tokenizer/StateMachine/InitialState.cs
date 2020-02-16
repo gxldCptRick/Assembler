@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AssemblerLib.Tokenizer.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Tokenizer.StateMachine
 {

@@ -1,12 +1,12 @@
 ﻿using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
+    [DebuggerDisplay("F := {Numeric}")]
     public class FactorSubstituteRule : IGrammerRule, IConditionalRule
     {
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
@@ -19,7 +19,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
             var nextStack = new Stack<IToken>();
             foreach (var token in currentStack)
             {
-                if(token is NumericToken nt)
+                if (token is NumericToken nt)
                 {
                     nextStack.Push(new SimpleFactor(nt));
                 }

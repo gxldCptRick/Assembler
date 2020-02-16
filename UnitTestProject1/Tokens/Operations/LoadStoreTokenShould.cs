@@ -1,13 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Commands;
+﻿using AssemblerLib.Commands;
 using AssemblerLib.Commands.LoadStore;
+using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
 using FluentAssertions;
-using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AssemblerTests.Tokens.Operations
 {
@@ -17,7 +15,7 @@ namespace AssemblerTests.Tokens.Operations
         [TestMethod]
         public void EncodeImmediateTokenCorrectly()
         {
-            uint expectedBits = 0b1110_0111_1001_0100_0101_0000_0000_0000;
+            var expectedBits = 0b1110_0111_1001_0100_0101_0000_0000_0000;
             var expected = expectedBits.ToByteArray();
             expected.Reverse();
             var sut = new LoadStoreImmediateToken(
@@ -39,7 +37,7 @@ namespace AssemblerTests.Tokens.Operations
             var sut = new LoadStoreWritebackImmediateToken(
                 LoadStoreSelection.STR,
                 Condition.AL,
-                new RegisterToken("R13"), 
+                new RegisterToken("R13"),
                 new RegisterToken("R7"),
                 new SignedValueToken(new RawNumericToken(4)));
             var encoding = sut.Encode();

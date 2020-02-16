@@ -1,7 +1,6 @@
-﻿using System;
+﻿using AssemblerLib.Tokenizer.Tokens;
 using System.Collections.Generic;
 using System.Text;
-using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Tokenizer.StateMachine
 {
@@ -10,7 +9,7 @@ namespace AssemblerLib.Tokenizer.StateMachine
         public IState Transition(char condition, StringBuilder currentGroup, List<IToken> currentlyProccessedTokens)
         {
             IState state;
-            if(condition == '\n')
+            if (condition == '\n')
             {
                 currentlyProccessedTokens.Add(new CommentToken(currentGroup.ToString()));
                 currentGroup.Clear();

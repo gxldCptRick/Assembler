@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using AssemblerLib.Commands.DataProcessing;
+﻿using AssemblerLib.Commands.DataProcessing;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
@@ -18,17 +16,17 @@ namespace AssemblerLib.Grammar_Rules.Substitution
         {
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
-            int i = 0;
+            var i = 0;
             for (; i + 3 < s.Length; i++)
             {
                 if (s[i] is NumericToken secondParam &&
-                    s[i + 1] is RegisterToken source && 
-                    s[i + 2] is RegisterToken destination && 
+                    s[i + 1] is RegisterToken source &&
+                    s[i + 2] is RegisterToken destination &&
                     s[i + 3] is AlphaNumeric an && _immediatePattern.IsMatch(an) && !IsExcluded(an))
                 {
                     i += 3;
                     var token = builder.FromRawResources(an, destination, source, secondParam);
-                    nextStack.Push(token);              
+                    nextStack.Push(token);
                 }
                 else
                 {
@@ -46,7 +44,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
 
         private bool IsExcluded(string an)
         {
-            return an.StartsWith("STR") || an.StartsWith("LDR")|| an.StartsWith("B");
+            return an.StartsWith("STR") || an.StartsWith("LDR") || an.StartsWith("B");
         }
     }
 }

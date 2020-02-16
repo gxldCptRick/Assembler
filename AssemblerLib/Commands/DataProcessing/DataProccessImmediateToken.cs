@@ -8,16 +8,20 @@ namespace AssemblerLib.Commands.DataProcessing
     {
         private NumericToken _immediateValue;
 
-        public override string Content => $"{_opCode}{(_condition == Condition.AL ? (object)"" : (object)_condition)}I {_destinationRegister}, {_sourceRegister}, {ImmediateValue}";
+        public override string Content => $"{_opCode}{(_condition == Condition.AL ? "" : (object)_condition)}I {_destinationRegister}, {_sourceRegister}, {ImmediateValue}";
 
         public NumericToken ImmediateValue
         {
             get => _immediateValue;
             private set
             {
-                if (value == null) throw new ArgumentNullException(nameof(ImmediateValue));
+                if (value == null)
+                {
+                    throw new ArgumentNullException(nameof(ImmediateValue));
+                }
+
                 _immediateValue = value;
-                
+
             }
         }
 
@@ -28,8 +32,8 @@ namespace AssemblerLib.Commands.DataProcessing
 
         protected override int EncodeSections()
         {
-            int value = 0b0000_0000_0000_0000_0000_0000_1111_1111 & ImmediateValue;
-            int mods = 0;
+            var value = 0b0000_0000_0000_0000_0000_0000_1111_1111 & ImmediateValue;
+            var mods = 0;
             mods |= 1 << DataProccessConstants.IMMEDIATE_OPERAND_OFFSET;
             mods |= value << DataProccessConstants.IMMEDIATE_VALUE_OFFSET;
 

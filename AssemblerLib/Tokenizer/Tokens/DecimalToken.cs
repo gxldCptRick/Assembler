@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Tokenizer.Tokens
 {
@@ -9,9 +6,21 @@ namespace AssemblerLib.Tokenizer.Tokens
     {
 
         private static readonly Regex numberRegex = new Regex("[0-9]+");
-        protected override string FormatValue(int value) => value.ToString();
-        protected override bool IsValidValue(string value) => numberRegex.IsMatch(value);
-        protected override int ParseValue(string value) => int.Parse(value);
+        protected override string FormatValue(int value)
+        {
+            return value.ToString();
+        }
+
+        protected override bool IsValidValue(string value)
+        {
+            return numberRegex.IsMatch(value);
+        }
+
+        protected override int ParseValue(string value)
+        {
+            return int.Parse(value);
+        }
+
         public DecimalToken(string content) : base(content, "Content was not a valid decimal")
         { }
     }

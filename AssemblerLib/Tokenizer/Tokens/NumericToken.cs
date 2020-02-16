@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Tokenizer.Tokens
 {
@@ -37,12 +34,29 @@ namespace AssemblerLib.Tokenizer.Tokens
             _errorMessage = errorMessage;
         }
 
-        public override string ToString() => Content;
-        public bool Equals(NumericToken other) => other != null && other.Value == Value;
-        public override bool Equals(object obj) =>  obj is NumericToken num && Equals(num);
-        public override int GetHashCode() => Value.GetHashCode();
-        
+        public override string ToString()
+        {
+            return Content;
+        }
 
-        public static implicit operator int(NumericToken t) => t.Value;
+        public bool Equals(NumericToken other)
+        {
+            return other != null && other.Value == Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is NumericToken num && Equals(num);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value.GetHashCode();
+        }
+
+        public static implicit operator int(NumericToken t)
+        {
+            return t.Value;
+        }
     }
 }

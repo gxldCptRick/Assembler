@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Grammar_Rules.Tokens;
+﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
@@ -14,7 +12,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
             var groupedInstructions = new List<InstructionToken>();
             foreach (var token in currentStack)
             {
-                if(token is InstructionToken i)
+                if (token is InstructionToken i)
                 {
                     groupedInstructions.Add(i);
                 }

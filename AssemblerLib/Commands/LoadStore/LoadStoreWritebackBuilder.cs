@@ -1,8 +1,6 @@
 ﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Commands.LoadStore
 {
@@ -22,16 +20,17 @@ namespace AssemblerLib.Commands.LoadStore
 
             if (tokens.Length == 5)
             {
-                if(marker.Length > 3)
+                if (marker.Length > 3)
                 {
                     condition = (Condition)Enum.Parse(typeof(Condition), marker.Substring(3, 2));
                 }
                 var offset = tokens[3] as RegisterToken;
                 var shift = tokens[4] as SignedValueToken;
                 return new LoadStoreWritebackRegisterToken(operation, condition, source, destination, offset, shift);
-            }else if(tokens.Length == 4)
+            }
+            else if (tokens.Length == 4)
             {
-                if(marker.Length > 4)
+                if (marker.Length > 4)
                 {
                     condition = (Condition)Enum.Parse(typeof(Condition), marker.Substring(3, 2));
                 }

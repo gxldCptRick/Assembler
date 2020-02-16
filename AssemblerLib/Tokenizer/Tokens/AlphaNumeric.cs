@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AssemblerLib.Tokenizer.Tokens
 {
     public class AlphaNumeric : IToken, IEquatable<AlphaNumeric>
     {
-        static readonly Regex alphaNumericRegex = new Regex("[A-Z0-9a-z]+");
-        static bool IsValidContent(string content) => alphaNumericRegex.IsMatch(content);
+        private static readonly Regex alphaNumericRegex = new Regex("[A-Z0-9a-z]+");
+
+        private static bool IsValidContent(string content)
+        {
+            return alphaNumericRegex.IsMatch(content);
+        }
+
         private string _content;
         public string Content
         {
@@ -32,11 +35,29 @@ namespace AssemblerLib.Tokenizer.Tokens
             Content = content;
         }
 
-        public override int GetHashCode() => Content?.GetHashCode() ?? 0;
-        public override bool Equals(object obj) => obj is AlphaNumeric a && Equals(a);
-        public bool Equals(AlphaNumeric other) => other != null && other.Content == Content;
-        public override string ToString() => Content;
+        public override int GetHashCode()
+        {
+            return Content?.GetHashCode() ?? 0;
+        }
 
-        public static implicit operator string(AlphaNumeric an) => an.Content;
+        public override bool Equals(object obj)
+        {
+            return obj is AlphaNumeric a && Equals(a);
+        }
+
+        public bool Equals(AlphaNumeric other)
+        {
+            return other != null && other.Content == Content;
+        }
+
+        public override string ToString()
+        {
+            return Content;
+        }
+
+        public static implicit operator string(AlphaNumeric an)
+        {
+            return an.Content;
+        }
     }
 }

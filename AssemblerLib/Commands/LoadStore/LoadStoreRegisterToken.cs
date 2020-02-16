@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Grammar_Rules.Tokens;
+﻿using AssemblerLib.Grammar_Rules.Tokens;
 
 namespace AssemblerLib.Commands.LoadStore
 {
     public class LoadStoreRegisterToken : LoadStoreToken
     {
-        public override string Content => $"{_operation}{(_condition == Condition.AL ? (object)"" : (object)_condition)} {_destination}, {_source}, {_offset}, {_shift}";
+        public override string Content => $"{_operation}{(_condition == Condition.AL ? "" : (object)_condition)} {_destination}, {_source}, {_offset}, {_shift}";
         protected SignedValueToken _shift;
         protected RegisterToken _offset;
 
@@ -21,8 +18,8 @@ namespace AssemblerLib.Commands.LoadStore
 
         protected override int EncodeHook()
         {
-            int i = 0;
-            if(_shift < 0)
+            var i = 0;
+            if (_shift < 0)
             {
                 i |= (-_shift) << LoadStoreConstants.SHIFT_OFFSET;
             }

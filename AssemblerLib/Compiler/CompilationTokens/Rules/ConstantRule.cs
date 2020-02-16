@@ -2,9 +2,7 @@
 using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
@@ -14,7 +12,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
         {
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
-            int i = 0;
+            var i = 0;
             for (; i < s.Length; i++)
             {
                 if (i + 1 < s.Length)
@@ -25,7 +23,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                         i += 1;
                         nextStack.Push(new ConstantStatement(properValue));
                     }
-                    else if(s[i] is Expression value)
+                    else if (s[i] is Expression value)
                     {
                         nextStack.Push(new ConstantStatement(value));
                     }

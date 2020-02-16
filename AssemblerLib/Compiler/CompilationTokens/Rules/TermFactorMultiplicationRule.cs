@@ -1,12 +1,12 @@
 ﻿using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
+    [DebuggerDisplay("T := T * F")]
     public class TermFactorMultiplicationRule : IGrammerRule, IConditionalRule
     {
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
@@ -20,13 +20,13 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
             var i = 0;
-            for(;i + 2 < s.Length; i++)
+            for (; i + 2 < s.Length; i++)
             {
                 if (s[i] is Factor f &&
                     s[i + 1] is SpecialChars op && op == "*" &&
                     s[i + 2] is Term t)
                 {
-                    i += 1;
+                    i += 2;
                     nextStack.Push(new RecursiveTerm(t, f));
                 }
                 else

@@ -1,11 +1,11 @@
 ﻿using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
+    [DebuggerDisplay("P := [ S ]")]
     public class FinalProgramRule : IGrammerRule
     {
         public Stack<IToken> ReduceStack(Stack<IToken> currentStack)
@@ -14,7 +14,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
             var list = new List<IStatement>();
             foreach (var token in currentStack)
             {
-                if(token is IStatement statement)
+                if (token is IStatement statement)
                 {
                     list.Add(statement);
                 }
@@ -25,7 +25,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                     nextStack.Push(token);
                 }
             }
-            if(list.Count > 0)
+            if (list.Count > 0)
             {
                 nextStack.Push(new Program(list));
             }

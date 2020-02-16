@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Commands;
+﻿using AssemblerLib.Commands;
 using AssemblerLib.Commands.PushPop;
 using AssemblerLib.Grammar_Rules.Tokens;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace AssemblerTests.Tokens.Operations
 {

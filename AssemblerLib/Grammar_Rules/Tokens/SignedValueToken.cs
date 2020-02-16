@@ -1,7 +1,4 @@
 ﻿using AssemblerLib.Tokenizer.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Grammar_Rules.Tokens
 {
@@ -18,7 +15,10 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             _nestedToken = nestedToken;
             IsNegative = isNegative;
         }
-        public static implicit operator int(SignedValueToken svt) => svt.Value;
+        public static implicit operator int(SignedValueToken svt)
+        {
+            return svt.Value;
+        }
 
         public override string ToString()
         {

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Commands;
+﻿using AssemblerLib.Commands;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
 
 namespace AssemblerLib.Grammar_Rules.Substitution
 {
@@ -13,12 +11,12 @@ namespace AssemblerLib.Grammar_Rules.Substitution
         {
             var s = currentStack.ToArray();
             var nextStack = new Stack<IToken>();
-            int i = 0;
+            var i = 0;
             for (; i + 1 < s.Length; i++)
             {
                 if (s[i] is IOperation op)
                 {
-                    if(s[i + 1] is LabelToken label)
+                    if (s[i + 1] is LabelToken label)
                     {
                         nextStack.Push(new InstructionToken(op, label));
                         i++;
@@ -34,7 +32,7 @@ namespace AssemblerLib.Grammar_Rules.Substitution
                 }
             }
 
-            for(; i < s.Length; i++)
+            for (; i < s.Length; i++)
             {
                 if (s[i] is IOperation op)
                 {

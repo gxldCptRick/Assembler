@@ -2,7 +2,6 @@ using AssemblerLib.Tokenizer;
 using AssemblerLib.Tokenizer.Tokens;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 
 namespace AssemblerTests
 {
@@ -12,7 +11,7 @@ namespace AssemblerTests
         [TestMethod]
         public void ParseAlphaTokensCorrectly()
         {
-            string input = "Alpah string";
+            var input = "Alpah string";
             var sut = new Tokenizer();
             var output = sut.Tokenize(input);
             output
@@ -25,7 +24,7 @@ namespace AssemblerTests
         [TestMethod]
         public void ParseDecimalTokens()
         {
-            string input = "10 1001";
+            var input = "10 1001";
             var sut = new Tokenizer();
             var output = sut.Tokenize(input);
             output
@@ -38,7 +37,7 @@ namespace AssemblerTests
         [TestMethod]
         public void ParseHexTokens()
         {
-            string input = "0xFF11 0xABCDEF";
+            var input = "0xFF11 0xABCDEF";
             var sut = new Tokenizer();
             var output = sut.Tokenize(input);
             output
@@ -51,7 +50,7 @@ namespace AssemblerTests
         [TestMethod]
         public void ParseSingleLineComment()
         {
-            string input = "// this is a single line comment\n //this is not a another single line comment";
+            var input = "// this is a single line comment\n //this is not a another single line comment";
             var sut = new Tokenizer();
             var content = sut.Tokenize(input);
             content
@@ -67,7 +66,7 @@ namespace AssemblerTests
         [TestMethod]
         public void ParseMultiLineComments()
         {
-            string input = "/* you are the one being racist */ /**/";
+            var input = "/* you are the one being racist */ /**/";
             var sut = new Tokenizer();
             var content = sut.Tokenize(input);
             content
@@ -83,7 +82,7 @@ namespace AssemblerTests
         [TestMethod]
         public void ParseDifferentCommentsAtTheSameTime()
         {
-            string input = "/* Shaggy man */ //I am squanching over here";
+            var input = "/* Shaggy man */ //I am squanching over here";
             var sut = new Tokenizer();
             var output = sut.Tokenize(input);
             output
@@ -133,7 +132,7 @@ namespace AssemblerTests
         [TestMethod]
         public void ParseSpecialCharacters()
         {
-            string input = ", (:)";
+            var input = ", (:)";
             var sut = new Tokenizer();
             var output = sut.Tokenize(input);
             output.Should()
@@ -150,7 +149,7 @@ namespace AssemblerTests
         [TestMethod]
         public void TokenizeASimpleCommandWithLabel()
         {
-            string input = "omega: ADD R1, R2, R3";
+            var input = "omega: ADD R1, R2, R3";
             var sut = new Tokenizer();
             var output = sut.Tokenize(input);
             output.Should()

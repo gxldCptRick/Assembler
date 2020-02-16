@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
+﻿using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
 using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens

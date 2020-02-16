@@ -1,8 +1,4 @@
 ﻿using AssemblerLib.Grammar_Rules.Tokens;
-using AssemblerLib.Tokenizer.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssemblerLib.Commands.DataProcessing
 {
@@ -27,7 +23,7 @@ namespace AssemblerLib.Commands.DataProcessing
         public byte[] Encode()
         {
             // apply the bit stuff with whatever we inherit
-            int i = 0 | EncodeSections();
+            var i = 0 | EncodeSections();
             // this is where we play with the bytes
             i |= ((int)_condition) << (DataProccessConstants.CONDITION_OFFSET);
             i &= DataProccessConstants.VALUE_TO_HARD_CODE_ZEROS;
@@ -39,7 +35,7 @@ namespace AssemblerLib.Commands.DataProcessing
             i |= _sourceRegister << DataProccessConstants.SOURCE_REGISTER_OFFSET;
             i |= _destinationRegister << DataProccessConstants.DESTINATION_REGISTER_OFFSET;
             // fixes the endianess of our command
-            byte[] bytes = i.ToByteArray();
+            var bytes = i.ToByteArray();
             bytes.Reverse();
             return bytes;
         }
