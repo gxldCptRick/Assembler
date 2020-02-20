@@ -22,6 +22,7 @@ namespace AssemblerLib.Parser
                 new BranchRule(),
                 new BranchLinkRule(),
                 new PushPopRule(),
+                new MulitplyRule(),
                 new MoveTopBottomRule(),
                 new MovShorthandRule(),
                 new DataProccessImmediateRule(),

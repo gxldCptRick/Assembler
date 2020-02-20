@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AssemblerLib.Tokenizer.Tokens
 {
+    [DebuggerDisplay("Special Character: {Content}")]
     public class SpecialChars : IToken, IEquatable<SpecialChars>
     {
-        private static readonly ISet<char> SpecialCharacters = new HashSet<char>() { ',', '(', ')', ':', '-', '!', ';', '+', '*' };
+        private static readonly ISet<char> SpecialCharacters = new HashSet<char>() { ',', '(', ')', ':', '-', '!', ';', '+', '*', '=' };
         public static bool IsSpecialCharacter(string content)
         {
             return content != null &&
-content.Trim().Length == 1 &&
-IsSpecialCharacter(content.Trim()[0]);
+                content.Trim().Length == 1 &&
+                IsSpecialCharacter(content.Trim()[0]);
         }
 
         public static bool IsSpecialCharacter(char content)

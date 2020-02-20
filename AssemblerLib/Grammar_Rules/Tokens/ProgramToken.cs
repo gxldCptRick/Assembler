@@ -9,8 +9,8 @@ namespace AssemblerLib.Grammar_Rules.Tokens
     public class ProgramToken : IToken
     {
         public string Content => Instructions
-            .Select(i => i.Content)
-            .Aggregate((agg, next) => $"{agg}{Environment.NewLine}{next}");
+            .Select(i => i.ToString())
+            .Aggregate("", (agg, next) => $"{agg}{Environment.NewLine}{next}").Trim();
 
         private IDictionary<AlphaNumeric, int> _labelMapping;
         public IList<InstructionToken> Instructions
@@ -61,8 +61,7 @@ namespace AssemblerLib.Grammar_Rules.Tokens
 
         public override bool Equals(object obj)
         {
-            return obj is ProgramToken token &&
-                    Instructions.SequenceEqual(token.Instructions);
+            return obj is ProgramToken token && token.Compile().SequenceEqual(Compile());
         }
 
         public override int GetHashCode()

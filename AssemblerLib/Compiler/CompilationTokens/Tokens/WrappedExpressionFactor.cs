@@ -1,4 +1,5 @@
-﻿using AssemblerLib.Tokenizer.Tokens;
+﻿using System.Collections.Generic;
+using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
@@ -12,6 +13,11 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
         public WrappedExpressionFactor(Expression wrappedExpression)
         {
             WrappedExpression = wrappedExpression;
+        }
+
+        public override IEnumerable<IToken> Assemble()
+        {
+            return WrappedExpression.Assemble();
         }
     }
 }

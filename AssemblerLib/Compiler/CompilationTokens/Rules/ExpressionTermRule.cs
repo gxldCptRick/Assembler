@@ -6,15 +6,17 @@ using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
+    /// <summary>
+    /// Expresion := Term
+    /// </summary>
     [DebuggerDisplay("E := T")]
     public class ExpressionTermRule : IGrammerRule, IConditionalRule
     {
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
         {
-            return (nextToken is SpecialChars leadingPlus && leadingPlus != null && (leadingPlus == "+" || leadingPlus == "*")) ||
-                (currentStack.Peek() is SpecialChars plus && 
-                ((plus == "+" && nextToken is Term t && t != null) || (plus == "*" && nextToken is Factor fr && fr != null))) ?
-                currentStack :
+            return (nextToken is SpecialChars leadingPlus && leadingPlus != null && (leadingPlus == "*")) ||
+                currentStack.Contains(new SpecialChars("*")) ?
+                currentStack:
                 ReduceStack(currentStack);
         }
         public Stack<IToken> ReduceStack(Stack<IToken> currentStack)
@@ -32,6 +34,13 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                 }
             }
             return new Stack<IToken>(nextStack);
+        }
+        /// <summary>
+        /// E := T
+        /// </summary>
+        public ExpressionTermRule()
+        {
+
         }
     }
 }

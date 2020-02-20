@@ -1,10 +1,12 @@
 ﻿using AssemblerLib.Tokenizer.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AssemblerLib.Compiler.CompilationTokens
 {
+    [DebuggerDisplay("Program: [{Content}]")]
     public class Program : ICompilationToken
     {
         public string Content => Statements.Select(s => s.Content).Aggregate("", (agg, next) => $"{agg}{Environment.NewLine}{next}").Trim();
@@ -28,6 +30,11 @@ namespace AssemblerLib.Compiler.CompilationTokens
                     yield return token;
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{{{Content}}}";
         }
     }
 }

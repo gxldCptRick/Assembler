@@ -1,4 +1,5 @@
-﻿using AssemblerLib.Tokenizer.Tokens;
+﻿using System.Collections.Generic;
+using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
@@ -12,6 +13,11 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
         public ExpressionTerm(Term term)
         {
             Term = term;
+        }
+
+        public override IEnumerable<IToken> Assemble()
+        {
+            return Term.Assemble();
         }
     }
 }

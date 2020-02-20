@@ -8,6 +8,11 @@ namespace AssemblerLib.Tokenizer
 {
     public class Tokenizer
     {
+        /// <summary>
+        /// Creates a token list out of a string input.
+        /// </summary>
+        /// <param name="input">Arbritary string input in which it will attempt to parse out tokens</param>
+        /// <returns>The list of tokens found within the input</returns>
         public List<IToken> Tokenize(string input)
         {
             IState startingState = new InitialState();

@@ -1,4 +1,6 @@
-﻿using AssemblerLib.Tokenizer.Tokens;
+﻿using System.Collections.Generic;
+using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
+using AssemblerLib.Tokenizer.Tokens;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
@@ -11,6 +13,11 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
         public SimpleFactor(NumericToken value)
         {
             Value = value;
+        }
+
+        public override IEnumerable<IToken> Assemble()
+        {
+            return Value.Assemble();
         }
     }
 }

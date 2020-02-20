@@ -1,4 +1,5 @@
-﻿using AssemblerLib.Grammar_Rules;
+﻿using AssemblerLib.Exceptions;
+using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,6 +21,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
                 }
                 else
                 {
+                    if (list.Count == 0) throw new InvalidStack(currentStack, "Program should be able to have exactly one item if stack contains tokens");
                     nextStack.Push(new Program(list));
                     list.Clear();
                     nextStack.Push(token);

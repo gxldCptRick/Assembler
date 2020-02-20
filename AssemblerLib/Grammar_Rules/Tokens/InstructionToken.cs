@@ -30,7 +30,7 @@ namespace AssemblerLib.Grammar_Rules.Tokens
         }
         public override string ToString()
         {
-            return Content;
+            return $"{{{Content}}}";
         }
 
         public override bool Equals(object obj)

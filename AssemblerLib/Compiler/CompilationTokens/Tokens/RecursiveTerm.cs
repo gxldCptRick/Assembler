@@ -1,5 +1,9 @@
-﻿using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AssemblerLib.Compiler.CompilationTokens.BoostedTokens;
+using static AssemblerLib.Compiler.CompilationTokens.BoostedTokens.CompliationExtensions;
 using AssemblerLib.Tokenizer.Tokens;
+
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
@@ -16,6 +20,18 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
             NestedTerm = nested;
             Factor = factor;
             Value = new RawNumericToken(NestedTerm.Value * Factor.Value);
+        }
+
+        public override IEnumerable<IToken> Assemble()
+        {
+            return NestedTerm.Assemble()
+                .Concat(Factor.Assemble())
+                .Concat(new IToken[] {
+                    Pop(_defaultValueRegister),
+                    Pop(_defaultSecondValueRegister),
+                    Mulitply(),
+                    Push()
+                });
         }
     }
 }

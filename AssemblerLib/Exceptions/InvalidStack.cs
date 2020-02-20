@@ -20,7 +20,7 @@ namespace AssemblerLib.Exceptions
         public Stack<IToken> Stack { get; }
         public string Reason { get; }
 
-        public InvalidStack(Stack<IToken> invalidStack, string reason) : base($"Invalid Stack reason{reason}:\n\t{invalidStack.FormatValues()}")
+        public InvalidStack(Stack<IToken> invalidStack, string reason) : base($"Invalid Stack reason: {reason}:\n\t{invalidStack.FormatValues()}")
         {
             Stack = invalidStack;
             Reason = reason;

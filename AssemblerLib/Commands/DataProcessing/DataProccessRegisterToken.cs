@@ -1,12 +1,13 @@
 ﻿using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System.Linq;
 using System;
 
 namespace AssemblerLib.Commands.DataProcessing
 {
     public class DataProccessRegisterToken : DataProccessingToken
     {
-
+        
 
         private NumericToken _shift;
         private RegisterToken _secondParameter;

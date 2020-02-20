@@ -9,6 +9,13 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
     [DebuggerDisplay("F := {Numeric}")]
     public class FactorSubstituteRule : IGrammerRule, IConditionalRule
     {
+        /// <summary>
+        /// F := {Numeric}
+        /// </summary>
+        public FactorSubstituteRule()
+        {
+
+        }
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
         {
             return ReduceStack(currentStack);

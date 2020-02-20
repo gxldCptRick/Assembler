@@ -1,11 +1,13 @@
 ﻿using AssemblerLib.Tokenizer.Tokens;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
     public class FactorTerm : Term
     {
         public override string Content => Factor.Content;
-        private Factor Factor { get; }
+        public Factor Factor { get; }
 
         public override NumericToken Value => Factor.Value;
 
@@ -14,6 +16,15 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
             Factor = factor;
         }
 
+        public override IEnumerable<IToken> Assemble()
+        {
+            return Factor.Assemble();
+        }
+
+        public override string ToString()
+        {
+            return Content;
+        }
 
     }
 }

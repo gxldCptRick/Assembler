@@ -9,6 +9,12 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
     [DebuggerDisplay("T := T * F")]
     public class TermFactorMultiplicationRule : IGrammerRule, IConditionalRule
     {
+        /// <summary>
+        /// T := T * F
+        /// </summary>
+        public TermFactorMultiplicationRule()
+        {
+        }
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
         {
             return ReduceStack(currentStack);

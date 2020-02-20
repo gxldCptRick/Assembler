@@ -2,7 +2,7 @@
   "profiles": {
     "Assembler_Andres_Carrera": {
       "commandName": "Project",
-      "commandLineArgs": ".\\demo.txt -c .\\blinking_light_template.asm -o kernel7.img ",
+      "commandLineArgs": ".\\demo-adder.txt -c .\\blinking_light_template.asm -o kernel7.img ",
       "workingDirectory": "C:\\Users\\Andres Carrera\\Documents\\Programming Languages"
     }
   }

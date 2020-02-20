@@ -9,6 +9,14 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
     [DebuggerDisplay("F := (E)")]
     public class FactorWrappingExpression : IGrammerRule, IConditionalRule
     {
+        /// <summary>
+        /// F := (E)
+        /// </summary>
+        public FactorWrappingExpression()
+        {
+
+        }
+
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
         {
             return ReduceStack(currentStack);
