@@ -9,13 +9,6 @@ namespace AssemblerLib.Compiler.CompilationTokens.Rules
     [DebuggerDisplay("E := E + T")]
     public class ExpressionAddTermRule : IGrammerRule, IConditionalRule
     {
-        /// <summary>
-        /// E := E + T
-        /// </summary>
-        public ExpressionAddTermRule()
-        {
-
-        }
         public Stack<IToken> ConditionallyReduceStack(Stack<IToken> currentStack, IToken nextToken)
         {
             return (nextToken is SpecialChars sc && sc == "*" )||

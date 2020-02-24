@@ -3,9 +3,11 @@ using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Tokenizer.Tokens;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
+    [DebuggerDisplay("I := E")]
     public class ConstantRule : IGrammerRule
     {
         public Stack<IToken> ReduceStack(Stack<IToken> currentStack)

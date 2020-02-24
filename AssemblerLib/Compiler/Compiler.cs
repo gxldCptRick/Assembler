@@ -1,7 +1,9 @@
 ﻿using AssemblerLib.Compiler.CompilationTokens;
+using AssemblerLib.Compiler.CompilationTokens.Meta;
 using AssemblerLib.Compiler.CompilationTokens.Rules;
 using AssemblerLib.Compiler.CompilationTokens.Tokens;
 using AssemblerLib.Exceptions;
+using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Parser;
 using AssemblerLib.Tokenizer.Tokens;
@@ -13,17 +15,33 @@ namespace AssemblerLib.Compiler
 {
     public class Compiler
     {
-        private IList<IConditionalRule> _compilerProccessingEngine;
-        public Compiler(Action<ProgramToken> callbackHook)
+        private IEnumerable<IConditionalRule> _compilerProccessingEngine;
+        private IEnumerable<IGrammerRule> _preProccessingEngine;
+        private IEnumerable<IGrammerRule> _postProccessingEngine;
+        private SymbolTable _globalTable;
+        public Compiler(Action<ProgramToken> callbackHook, SymbolTable table=null)
         {
             _callbackHook = callbackHook;
-            _compilerProccessingEngine = new List<IConditionalRule>
+            _globalTable = table ?? new SymbolTable(0xFB0);
+            _preProccessingEngine = new IGrammerRule[]
+            {
+                new FactorSubstituteRule(),
+                new VariableRule(_globalTable)
+            };
+            _compilerProccessingEngine = new IConditionalRule[]
             {
                 new FactorWrappingExpression(),
+                new VariableFactorRule(),
                 new TermFactorMultiplicationRule(),
                 new TermFactorRule(),
                 new ExpressionAddTermRule(),
                 new ExpressionTermRule(),
+            };
+            _postProccessingEngine = new IGrammerRule[]
+            {
+                new VariableAssignmentRule(),
+                new ConstantRule(),
+                new FinalProgramRule()
             };
         }
 
@@ -45,12 +63,22 @@ namespace AssemblerLib.Compiler
             if (!(stack.Peek() is Expression)) throw new InvalidStack(stack, "Stack did not reduce to expression");
             return stack.Pop() as Expression;
         }
+
+        private Stack<IToken> PreproccessStack(IEnumerable<IToken> tokens)
+        {
+            var fullStack = new Stack<IToken>(tokens);
+            foreach (var rule in _preProccessingEngine)
+            {
+                fullStack = rule.ReduceStack(fullStack);
+            }
+            return new Stack<IToken>(fullStack);
+        }
+
         public ProgramToken Compile(string input)
         {
             
             var initialTokenizedInput = new Tokenizer.Tokenizer().Tokenize(input);
-            var proccessedStack = new FactorSubstituteRule().ReduceStack(new Stack<IToken>(initialTokenizedInput));
-            var tokenizedInput = proccessedStack.Reverse().ToList();
+            var tokenizedInput = PreproccessStack(initialTokenizedInput).ToList();
             ReducePairs(tokenizedInput);
             var stack = new Stack<IToken>();
             for (var i = 0; i < tokenizedInput.Count; i++)
@@ -63,8 +91,11 @@ namespace AssemblerLib.Compiler
                     stack = rule.ConditionallyReduceStack(stack, nextElement);
                 }
             }
-            stack = new ConstantRule().ReduceStack(stack);
-            stack = new FinalProgramRule().ReduceStack(stack);
+            foreach (var rule in _postProccessingEngine)
+            {
+                stack = rule.ReduceStack(stack);
+            }
+
             if (stack.Count != 1)
             {
                 throw new InvalidStack(stack, $"Stack should have reduced to one not {stack.Count}");
