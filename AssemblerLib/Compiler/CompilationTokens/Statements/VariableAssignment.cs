@@ -22,7 +22,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Statements
         }
         public IEnumerable<IToken> AssemblyCommand()
         {
-            return Value.Assemble().Concat(Bucket.AssembleStore());
+            return Value.Assemble().Concat(Bucket.WriteOut());
         }
     }
 }

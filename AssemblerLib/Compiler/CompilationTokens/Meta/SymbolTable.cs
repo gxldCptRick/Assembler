@@ -8,30 +8,70 @@ namespace AssemblerLib.Compiler.CompilationTokens.Meta
 {
     public class SymbolTable
     {
-        private IDictionary<AlphaNumeric, Variable> Symbols { get; set; }
+        private IDictionary<AlphaNumeric, Variable> DefinedVariables { get; set; }
+        private IDictionary<AlphaNumeric, Function> DefinedFunctions { get; set; }
         public int NextAvailableAddress { get; private set; }
         public int BaseAddress { get;  }
 
-        public Variable Resolve(AlphaNumeric an)
+       
+        public Variable DefineVariable(AlphaNumeric name)
         {
-            if (!Symbols.ContainsKey(an))
+            if (!DefinedVariables.ContainsKey(name))
             {
-                Symbols[an] = new Variable(an, NextAvailableAddress);
+                DefinedVariables[name] = new Variable(name, NextAvailableAddress);
                 NextAvailableAddress += 4;
             }
-            return Symbols[an];
+            
+            return DefinedVariables[name];
+        }
+
+        public Function DefineFunction(AlphaNumeric name)
+        {
+            if (!DefinedFunctions.ContainsKey(name))
+            {
+                DefinedFunctions[name] = new Function(name);
+            }
+
+            return DefinedFunctions[name];
+        }
+
+        public CompilerTracked Resolve(AlphaNumeric name)
+        {
+            if (DefinedVariables.ContainsKey(name))
+            {
+                return DefinedVariables[name];
+            }else if (DefinedFunctions.ContainsKey(name))
+            {
+                return DefinedFunctions[name];
+            }else
+            {
+                throw new NullReferenceException($"Variable is not created for name: {name}");
+            }
+        }
+
+
+        public IEnumerable<Function> GetAllFunctions()
+        {
+            return DefinedFunctions.Values;
         }
 
         public SymbolTable(int baseAddress)
         {
-            Symbols = new Dictionary<AlphaNumeric, Variable>();
+            DefinedVariables = new Dictionary<AlphaNumeric, Variable>();
+            DefinedFunctions = new Dictionary<AlphaNumeric, Function>();
             BaseAddress = NextAvailableAddress = baseAddress;
             
         }
 
-        public Variable Resolve(string variableName)
+        public Variable ResolveVariable(string variableName)
         {
-            return Resolve(new AlphaNumeric(variableName));
+            var name = new AlphaNumeric(variableName);
+            if (!DefinedVariables.ContainsKey(name))
+            {
+                DefinedVariables[name] = new Variable(name, NextAvailableAddress);
+                NextAvailableAddress += 4;
+            }
+            return DefinedVariables[name];
         }
     }
 }

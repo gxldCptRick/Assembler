@@ -20,7 +20,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
         }
         public override IEnumerable<IToken> Assemble()
         {
-            return ActualValue.AssembleLoad();
+            return ActualValue.ResolveValue();
         }
     }
 }

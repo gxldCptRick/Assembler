@@ -3,6 +3,7 @@ using AssemblerLib.Grammar_Rules;
 using AssemblerLib.Grammar_Rules.Substitution;
 using AssemblerLib.Grammar_Rules.Tokens;
 using AssemblerLib.Tokenizer.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,6 +43,7 @@ namespace AssemblerLib.Parser
 
         public ProgramToken Parse(IEnumerable<IToken> tokens)
         {
+            if (tokens.Count() == 0) return new ProgramToken(Array.Empty<InstructionToken>());
             var stack = new Stack<IToken>();
             var tokenStream = tokens.Where(t => !(t is CommentToken) && !(t is SpecialChars sc && sc == ","));
             foreach (var token in tokenStream)

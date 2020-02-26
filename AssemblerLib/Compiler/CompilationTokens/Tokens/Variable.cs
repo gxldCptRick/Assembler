@@ -9,12 +9,10 @@ using static AssemblerLib.Compiler.CompilationTokens.BoostedTokens.CompliationEx
 namespace AssemblerLib.Compiler.CompilationTokens.Tokens
 {
     [DebuggerDisplay("Variable: {Content}")]
-    public class Variable : ICompilationToken
+    public class Variable : CompilerTracked
     {
         private static readonly int LastSixteen = 0xFFFF;
-
-        public string Content => $"{Name}:(0x{Address.ToString("X")})";
-
+        public override string Content => $"{Name}:(0x{Address.ToString("X8")})";
         public AlphaNumeric Name { get; set; }
         public int Address { get; set; }
         public bool IsStored { get; set; }
@@ -23,7 +21,6 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
             Name = name;
             Address = address;
         }
-
         private IEnumerable<IToken> LoadAddressIntoRegister()
         {
             var bottomValue = Address & LastSixteen;
@@ -33,8 +30,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
                 MoveTop(_defaultVariableRegister, topValue)
             };
         }
-
-        public IEnumerable<IToken> AssembleLoad()
+        public override IEnumerable<IToken> ResolveValue()
         {
             if (!IsStored) throw new InvalidOperationException("You must first store a value into the variable before reading.");
             return LoadAddressIntoRegister()
@@ -43,14 +39,13 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
                     Push(_defaultVariableRegister)
                 });
         }
-
-        public IEnumerable<IToken> AssembleStore()
+        public override IEnumerable<IToken> WriteOut()
         {
             IsStored = true;
             return LoadAddressIntoRegister().Concat(new IToken[] {
                 Pop(_defaultValueRegister),
                 StoreRegister(_defaultVariableRegister, _defaultValueRegister),
-            }).Concat(AssembleLoad());
+            }).Concat(ResolveValue());
         }
         public override string ToString()
         {

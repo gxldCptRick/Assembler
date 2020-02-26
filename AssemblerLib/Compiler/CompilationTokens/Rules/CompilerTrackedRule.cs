@@ -8,10 +8,10 @@ using System.Text;
 
 namespace AssemblerLib.Compiler.CompilationTokens.Rules
 {
-    public class VariableRule : IGrammerRule, IConditionalRule
+    public class CompilerTrackedRule : IGrammerRule, IConditionalRule
     {
         private SymbolTable Symbols { get;  }
-        public VariableRule(SymbolTable symbols)
+        public CompilerTrackedRule(SymbolTable symbols)
         {
             Symbols = symbols;
         }

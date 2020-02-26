@@ -1,4 +1,5 @@
-﻿using AssemblerLib.Commands.DataProcessing;
+﻿using AssemblerLib.Commands.Branch;
+using AssemblerLib.Commands.DataProcessing;
 using AssemblerLib.Commands.LoadStore;
 using AssemblerLib.Commands.MoveTopBottom;
 using AssemblerLib.Commands.Multiply;
@@ -40,5 +41,7 @@ namespace AssemblerLib.Compiler.CompilationTokens.BoostedTokens
         public static DataProccessingToken Add() => new DataProccessRegisterToken(Condition.AL, OperationCode.ADD, _defaultValueRegister, _defaultValueRegister, _offsetZero, _defaultSecondValueRegister);
         public static LoadStoreToken LoadRegister(RegisterToken source, RegisterToken destination) => new LoadStoreImmediateToken(LoadStoreSelection.LDR, Condition.AL, source, destination, new SignedValueToken(_offsetZero));
         public static LoadStoreToken StoreRegister(RegisterToken source, RegisterToken destination) => new LoadStoreImmediateToken(LoadStoreSelection.STR, Condition.AL, source, destination, new SignedValueToken(_offsetZero));
+        public static BranchLinkToken BranchTo(AlphaNumeric destinationLabel) => new BranchLinkToken(Condition.AL, destinationLabel);
+        public static BranchExchange BranchBack() => new BranchExchange(Condition.AL, new RegisterToken("R14"));
     }
 }

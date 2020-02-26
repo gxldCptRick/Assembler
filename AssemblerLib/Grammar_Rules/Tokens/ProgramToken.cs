@@ -1,6 +1,7 @@
 ﻿using AssemblerLib.Commands.Branch;
 using AssemblerLib.Tokenizer.Tokens;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -70,5 +71,6 @@ namespace AssemblerLib.Grammar_Rules.Tokens
             hashCode = hashCode * -1521134295 + EqualityComparer<IList<InstructionToken>>.Default.GetHashCode(Instructions);
             return hashCode;
         }
+
     }
 }

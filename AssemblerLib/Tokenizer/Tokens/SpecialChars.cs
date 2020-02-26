@@ -7,7 +7,7 @@ namespace AssemblerLib.Tokenizer.Tokens
     [DebuggerDisplay("Special Character: {Content}")]
     public class SpecialChars : IToken, IEquatable<SpecialChars>
     {
-        private static readonly ISet<char> SpecialCharacters = new HashSet<char>() { ',', '(', ')', ':', '-', '!', ';', '+', '*', '=' };
+        private static readonly ISet<char> SpecialCharacters = new HashSet<char>() { ',', '(', ')', ':', '-', '!', ';', '+', '*', '=' , '{', '}'};
         public static bool IsSpecialCharacter(string content)
         {
             return content != null &&

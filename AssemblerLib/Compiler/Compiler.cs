@@ -19,18 +19,22 @@ namespace AssemblerLib.Compiler
         private IEnumerable<IGrammerRule> _preProccessingEngine;
         private IEnumerable<IGrammerRule> _postProccessingEngine;
         private SymbolTable _globalTable;
-        public Compiler(Action<ProgramToken> callbackHook, SymbolTable table=null)
+        public Compiler(Action<Program> callbackHook, SymbolTable table=null)
         {
             _callbackHook = callbackHook;
             _globalTable = table ?? new SymbolTable(0xFB0);
             _preProccessingEngine = new IGrammerRule[]
             {
                 new FactorSubstituteRule(),
-                new VariableRule(_globalTable)
+                new FunctionKeywordRule(),
+                new FunctionDeclarationRule(_globalTable),
+                new VariableDeclarationRule(_globalTable)
             };
             _compilerProccessingEngine = new IConditionalRule[]
             {
                 new FactorWrappingExpression(),
+                new CompilerTrackedRule(_globalTable),
+                new FunctionFactorRule(),
                 new VariableFactorRule(),
                 new TermFactorMultiplicationRule(),
                 new TermFactorRule(),
@@ -41,11 +45,12 @@ namespace AssemblerLib.Compiler
             {
                 new VariableAssignmentRule(),
                 new ConstantRule(),
+                new FunctionRule(),
                 new FinalProgramRule()
             };
         }
 
-        private readonly Action<ProgramToken> _callbackHook;
+        private readonly Action<Program> _callbackHook;
         private Expression ReduceExpression(IList<IToken> tokens)
         {
             var stack = new Stack<IToken>();
@@ -74,7 +79,7 @@ namespace AssemblerLib.Compiler
             return new Stack<IToken>(fullStack);
         }
 
-        public ProgramToken Compile(string input)
+        public ProgramToken Compile(string input, ProgramToken injectedProgram=null)
         {
             
             var initialTokenizedInput = new Tokenizer.Tokenizer().Tokenize(input);
@@ -95,6 +100,7 @@ namespace AssemblerLib.Compiler
             {
                 stack = rule.ReduceStack(stack);
             }
+            
 
             if (stack.Count != 1)
             {
@@ -107,8 +113,9 @@ namespace AssemblerLib.Compiler
             }
 
             var rawProgram = stack.Pop() as Program;
-            var program = new AssemblyParser().Parse(rawProgram.Assemble());
-            _callbackHook?.Invoke(program);
+            _callbackHook?.Invoke(rawProgram);
+            rawProgram.InjectProgram(injectedProgram);
+            var program = rawProgram.Assemble();
             return program;
         }
 

@@ -41,14 +41,23 @@ namespace AssemblerTests
 
         private string LoadVariable(string variableName)
         {
-            int addr = table.Resolve(variableName).Address;
+            int addr = (table.ResolveVariable(variableName) as Variable).Address;
             return $"MOVW R6, {addr & 0xFFFF} MOVT R6, {(addr >> 16) & 0xFFFF} LDRI R6, R6, 0 PUSH R6";
         }
 
         private string StoreVariable(string variableName)
         {
-            int addr = table.Resolve(variableName).Address;
+            int addr = (table.ResolveVariable(variableName) as Variable).Address;
             return $"MOVW R6, {addr & 0xFFFF} MOVT R6, {(addr >> 16) & 0xFFFF} POP R7 STRI R7, R6, 0 {LoadVariable(variableName)}";
+        }
+
+        private string DefineFunction(string label, params string[] instructions)
+        {
+            return ConcatCommand($"f: {ConcatCommand(instructions)}", "BX R14");
+        }
+        private string CallFunction(string name)
+        {
+            return $"BL {name}";
         }
 
         [ClassInitialize]
@@ -63,7 +72,7 @@ namespace AssemblerTests
         {
             var input = "2";
             var expected = Assembler.ParseAssembly(PushConstant(2));
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -73,7 +82,7 @@ namespace AssemblerTests
             var input = "2 + 2";
             var expected = Assembler
                 .ParseAssembly($"{PushConstant(2)} {PushConstant(2)} {AddValues()}");
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -91,7 +100,7 @@ namespace AssemblerTests
                     AddValues()
                     )
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -114,7 +123,7 @@ namespace AssemblerTests
                     PushConstant(5),
                     AddValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -128,7 +137,7 @@ namespace AssemblerTests
                     PushConstant(1),
                     MultiplyValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -144,7 +153,7 @@ namespace AssemblerTests
                     MultiplyValues(),
                     AddValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -160,7 +169,7 @@ namespace AssemblerTests
                     PushConstant(1),
                     AddValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -181,7 +190,7 @@ namespace AssemblerTests
                     PushConstant(4),
                     AddValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -199,7 +208,7 @@ namespace AssemblerTests
                 MultiplyValues(),
                 AddValues())
             );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -212,7 +221,7 @@ namespace AssemblerTests
                     PushConstant(1),
                     PushConstant(1),
                     AddValues()));
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -226,7 +235,7 @@ namespace AssemblerTests
                     PushConstant(1),
                     MultiplyValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -242,7 +251,7 @@ namespace AssemblerTests
                     PushConstant(1),
                     MultiplyValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -251,7 +260,7 @@ namespace AssemblerTests
         {
             var input = "((2))";
             var expected = Assembler.ParseAssembly(PushConstant(2));
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -260,7 +269,7 @@ namespace AssemblerTests
         {
             var input = "(2)";
             var expected = Assembler.ParseAssembly(PushConstant(2));
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -280,7 +289,7 @@ namespace AssemblerTests
                     MultiplyValues(),
                     AddValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -305,7 +314,7 @@ namespace AssemblerTests
                     AddValues()
                     )
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected));
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected));
             sut.Compile(input);
         }
 
@@ -346,7 +355,7 @@ namespace AssemblerTests
                 PushConstant(1),
                 StoreVariable("VAR"))
             );
-            var sut = new Compiler((actual) => actual.Should().Be(expected), table);
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected), table);
             sut.Compile(input);
         }
 
@@ -362,7 +371,7 @@ namespace AssemblerTests
                     PushConstant(2),
                     AddValues())
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected), table);
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected), table);
             sut.Compile(input);
         }
         [TestMethod]
@@ -379,7 +388,7 @@ namespace AssemblerTests
                     PushConstant(3),
                     StoreVariable("VAR"))
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected), table);
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected), table);
             sut.Compile(input);
         }
 
@@ -394,7 +403,7 @@ namespace AssemblerTests
                     PushConstant(3),
                     StoreVariable("VAR2"))
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected), table);
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected), table);
             sut.Compile(input);
         }
 
@@ -411,8 +420,65 @@ namespace AssemblerTests
                     MultiplyValues(),
                     StoreVariable("VAR2"))
                 );
-            var sut = new Compiler((actual) => actual.Should().Be(expected), table);
+            var sut = new Compiler((actual) => actual.Assemble().Should().Be(expected), table);
             sut.Compile(input);
+        }
+
+        [TestMethod]
+        public void CompileEmptyFunction()
+        {
+            var input = "FUNCTION f { }";
+            var sut = new Compiler(null);
+            sut.Compile(input).Content.Should().Be("f: BX R14");
+        }
+
+
+        [TestMethod]
+        public void CompileSingleStatementFunction()
+        {
+            var input = "FUNCTION f { 2 + 3 }";
+            var expectedAssembly = 
+                DefineFunction("f", 
+                PushConstant(2), 
+                PushConstant(3), 
+                AddValues());
+
+            var expected = Assembler.ParseAssembly(expectedAssembly);
+            var sut = new Compiler(a => a.Assemble().Should().Be(expected));
+            sut.Compile(input);
+        }
+
+        [TestMethod]
+        public void CompileFunctionDefinitionAndCall()
+        {
+            var input = "FUNCTION f { 2 + 3 } f";
+            var expectedAssembly = ConcatCommand(
+                CallFunction("f"),
+                DefineFunction("f", 
+                PushConstant(2),
+                PushConstant(3),
+                AddValues()));
+            var expected = Assembler.ParseAssembly(expectedAssembly);
+            var sut = new Compiler(a => a.Assemble().Should().Be(expected));
+            sut.Compile(input);
+        }
+
+        [TestMethod]
+        public void CompileFunctionAndInjectProgram()
+        {
+            var input = "FUNCTION f { 2 + 3 } f";
+            var expectedAssembly = ConcatCommand(
+                CallFunction("f"),
+                "MOVT R0, 0xFFFF",
+                DefineFunction("f", 
+                PushConstant(2),
+                PushConstant(3),
+                AddValues()));
+            var expected = Assembler.ParseAssembly(expectedAssembly);
+            var injectedProgramAsm = "MOVT R0, 0xFFFF";
+            var injectedProgram = Assembler.ParseAssembly(injectedProgramAsm);
+            var sut = new Compiler(null);
+            sut.Compile(input, injectedProgram).Should().Be(expected);
         }
     }
 }

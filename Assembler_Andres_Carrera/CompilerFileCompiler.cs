@@ -12,8 +12,10 @@ namespace Assembler_Andres_Carrera
         {
             var fileContents = File.ReadAllText(fromPath);
             var assemblyPath = assemblyOutFile ?? $"{fromPath.Substring(0, fromPath.LastIndexOf("."))}.asm";
-            var compiler = new Compiler((p) => File.WriteAllText(assemblyPath + ".compiled.asm", p.Content));
-            var program = compiler.Compile(fileContents);
+            var compiler = new Compiler((p) => File.WriteAllText(assemblyPath + ".compiled.asm", p.Assemble().Content));
+            var assembly = new AssemblyParser();
+            var assembledTemplate = assembly.ParseAssembly(File.ReadAllText(templatePath));
+            var program = compiler.Compile(fileContents, assembledTemplate);
             using (var writer = new FileStream(toPath, FileMode.Create))
             {
 
@@ -22,12 +24,6 @@ namespace Assembler_Andres_Carrera
                     writer.WriteByte(byteCode);
                 }
                 foreach (var byteCode in program.Compile())
-                {
-                    writer.WriteByte(byteCode);
-                }
-                var assembly = new AssemblyParser();
-                var assembledTemplate = assembly.ParseAssembly(File.ReadAllText(templatePath));
-                foreach (var byteCode in assembledTemplate.Compile())
                 {
                     writer.WriteByte(byteCode);
                 }
