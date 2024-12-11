@@ -35,6 +35,8 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
             {
                 var assembly = Statements.Select(c => c.AssemblyCommand()).SelectMany(e => e).ToList();
                 assembly[0] = new InstructionToken(assembly[0] as IOperation, label: new LabelToken(Name));
+                assembly.AddRange(ClearStack());
+                assembly.Add(Push(_defaultValueRegister));
                 assembly.Add(BranchBack());
                 return assembly;
             }
@@ -42,6 +44,11 @@ namespace AssemblerLib.Compiler.CompilationTokens.Tokens
             {
                 return new IToken[] { new InstructionToken(BranchBack(), label: new LabelToken(Name)) };
             }
+        }
+
+        private IEnumerable<IToken> ClearStack()
+        {
+            return Enumerable.Range(0, Statements.Count).Select(c => Pop(_defaultSecondValueRegister));
         }
 
         public IEnumerable<IToken> AssemblyCommand()

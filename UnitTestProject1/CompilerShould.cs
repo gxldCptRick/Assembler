@@ -51,9 +51,16 @@ namespace AssemblerTests
             return $"MOVW R6, {addr & 0xFFFF} MOVT R6, {(addr >> 16) & 0xFFFF} POP R7 STRI R7, R6, 0 {LoadVariable(variableName)}";
         }
 
-        private string DefineFunction(string label, params string[] instructions)
+        private string DefineFunction(string label, int statements, params string[] instructions)
         {
-            return ConcatCommand($"f: {ConcatCommand(instructions)}", "BX R14");
+            var instructionsCommand = ConcatCommand(instructions);
+            var clearString = ConcatCommand(Enumerable.Range(1, statements).Select(c => Pop("R8")).ToArray());
+            return ConcatCommand($"f: {instructionsCommand} {clearString} PUSH R7", "BX R14");
+        }
+
+        private string Pop(string register)
+        {
+            return $"POP {register}";
         }
         private string CallFunction(string name)
         {
@@ -438,7 +445,8 @@ namespace AssemblerTests
         {
             var input = "FUNCTION f { 2 + 3 }";
             var expectedAssembly = 
-                DefineFunction("f", 
+                DefineFunction("f",
+                1,
                 PushConstant(2), 
                 PushConstant(3), 
                 AddValues());
@@ -454,7 +462,8 @@ namespace AssemblerTests
             var input = "FUNCTION f { 2 + 3 } f";
             var expectedAssembly = ConcatCommand(
                 CallFunction("f"),
-                DefineFunction("f", 
+                DefineFunction("f",
+                1,
                 PushConstant(2),
                 PushConstant(3),
                 AddValues()));
@@ -471,6 +480,7 @@ namespace AssemblerTests
                 CallFunction("f"),
                 "MOVT R0, 0xFFFF",
                 DefineFunction("f", 
+                1,
                 PushConstant(2),
                 PushConstant(3),
                 AddValues()));
@@ -479,6 +489,39 @@ namespace AssemblerTests
             var injectedProgram = Assembler.ParseAssembly(injectedProgramAsm);
             var sut = new Compiler(null);
             sut.Compile(input, injectedProgram).Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void CompileFunctionWithMultipileLines()
+        {
+            var input = "FUNCTION f { 2 + 3  4 + 5}";
+            var expectedOutput = DefineFunction("f", 
+                2,
+                PushConstant(2),
+                PushConstant(3),
+                AddValues(),
+                PushConstant(4),
+                PushConstant(5),
+                AddValues());
+            var sut = new Compiler(null);
+            var expected = Assembler.ParseAssembly(expectedOutput);
+            sut.Compile(input).Should().Be(expected);
+        }
+
+        [TestMethod]
+        public void CompileMultipleFunctionsCorrectly()
+        {
+            var input = ConcatCommand("FUNCTION f { 2 + 3 }", "FUNCTION g { 3 + 3 }");
+            var expectedOutput = ConcatCommand(
+                DefineFunction("g", 1, PushConstant(3),
+                                        PushConstant(3),
+                                        AddValues()),
+                DefineFunction("f", 1, PushConstant(2),
+                                        PushConstant(3),
+                                        AddValues()));
+            var sut = new Compiler(null);
+            var expected = Assembler.ParseAssembly(expectedOutput);
+            sut.Compile(input).Should().Be(expected);
         }
     }
 }

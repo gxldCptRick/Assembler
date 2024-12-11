@@ -27,7 +27,7 @@ namespace Assembler_Andres_Carrera
                 {
                     writer.WriteByte(byteCode);
                 }
-                File.WriteAllLines(assemblyPath, new string[] { stackInit.Content, program.Content, assembledTemplate.Content });
+                File.WriteAllLines(assemblyPath, new string[] { stackInit.Content, program.Content });
             }
             Console.WriteLine($"Saved binary file to {toPath}");
         }
